@@ -27,11 +27,15 @@ class Commands(commands.Cog):
 
         params = { "client_id" : bot.user.id, "user_id" : interaction.user.id}    
         url = URL("localhost://2343/generate-url/")
-        url.with_query(params)
+        full_url = url.with_query(params)
+
+        resp = await self.bot.session(full_url)
+
+        data = await resp.json()
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=url, style=discord.ButtonStyle.link))
+        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
 
