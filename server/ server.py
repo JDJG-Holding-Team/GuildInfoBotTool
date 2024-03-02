@@ -11,8 +11,11 @@ states = {}
 @routes.get("/code/")
 async def code(request):
 
-    code = request.rel_url.query["code"]
-    state = request.rel_url.query["state"]
+    code = request.rel_url.query.get("code")
+    state = request.rel_url.query.get("state")
+
+    if not code or state:
+        return web.Response(status=401, text="Missing arguments you(need code and state)")
 
     if not state in states:
         return web.Response(status=401, text="invalid state(please don't fake states or please try again)")
@@ -26,8 +29,11 @@ async def code(request):
 async def generate_url(response):
 
     redirect_url = os.environ["redirect_url"]
-    client_id = request.rel_url.query["client_id"]
-    user_id = request.rel_url.query["user_id"]
+    client_id = request.rel_url.query.get("client_id")
+    user_id = request.rel_url.query.get("user_id")
+
+    if not client_id or user_id:
+        return web.Response(status=401, text="Missing arguments you(need client_id and user_id)")
 
     state = secrets.token_urlsafe(32)
 
