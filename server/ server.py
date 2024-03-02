@@ -39,7 +39,7 @@ async def generate_url(response):
 
     state = secrets.token_urlsafe(32)
 
-    states[state, user_id]
+    states[state] = user_id
 
     url = discord.utils.oauth_url(
         client_id,
