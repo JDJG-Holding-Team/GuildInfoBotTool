@@ -1,6 +1,8 @@
 import random
 import secrets
 
+from threading import Thread
+
 from aiohttp import web
 
 routes = web.RouteTableDef()
@@ -51,4 +53,11 @@ async def generate_url(response):
 
 app = web.Application()
 app.add_routes(routes)
-web.run_app(app, host="localhost", port=2343)
+
+
+def run():
+    web.run_app(app, host="localhost", port=2343)
+
+def b():
+    server = Thread(target=run)
+    server.start()
