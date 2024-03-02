@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from server import server
+import server
 
 
 class GuildInfoTool(commands.Bot):
