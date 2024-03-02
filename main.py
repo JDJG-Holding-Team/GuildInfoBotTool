@@ -1,7 +1,6 @@
 import os
 import sys
 import traceback
-
 from typing import Any, Optional
 
 import aiohttp
@@ -16,7 +15,6 @@ class GuildInfoTool(commands.Bot):
         self.secrets: dict = {}
 
         super().__init__(*args, **kwargs)
-
 
     async def setup_hook(self) -> None:
         for cog in EXTENSIONS:

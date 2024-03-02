@@ -1,11 +1,12 @@
-import secrets
 import random
+import secrets
 
 from aiohttp import web
 
 routes = web.RouteTableDef()
 
 states = {}
+
 
 @routes.get("/code/")
 async def code(request):
@@ -15,10 +16,11 @@ async def code(request):
 
     if not state in states:
         return web.Response(status=401, text="invalid state(please don't fake states or please try again)")
-    
+
     # send request to discord and have a way of having a bot.session to the discord bot that this calls.
 
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
+
 
 @routes.get("/generate-url/")
 async def generate_url(response):
@@ -35,10 +37,10 @@ async def generate_url(response):
     states[state, user_id]
 
     url = discord.utils.oauth_url(
-    client_id,
-    redirect_uri=redirect_url,
-    scopes=("identify", "guilds", "connections", "guild.members.read"),
-    state=state,
+        client_id,
+        redirect_uri=redirect_url,
+        scopes=("identify", "guilds", "connections", "guild.members.read"),
+        state=state,
     )
 
     return web.Response(status="200", text=f"{url}")
