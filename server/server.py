@@ -58,3 +58,4 @@ async def generate_url(response):
 
 app = web.Application()
 app.add_routes(routes)
+
