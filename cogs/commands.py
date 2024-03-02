@@ -34,7 +34,7 @@ class Commands(commands.Cog):
 
         # could I get the redirect url via api? probaly not right?
 
-        await interaction.response.send_message("Plus click on the button url to authorize oauth", view=view)
+        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
 
 async def setup(bot: GuildInfoTool):
     await bot.add_cog(Commands(bot))
