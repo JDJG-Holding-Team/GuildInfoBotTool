@@ -1,7 +1,7 @@
 import os
 import sys
 import traceback
-from typing import Any, Optional
+from typing import Any, Optional, Dict
 
 import aiohttp
 import discord
@@ -13,8 +13,8 @@ from server import server
 
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-
-        self.secrets: dict = {}
+        
+        self.guild_data : Dict[int, dict]  = {}
 
         super().__init__(*args, **kwargs)
 
@@ -56,5 +56,6 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
+server.app = bot.guild_data
 server.runner()
 bot.run(os.environ["TOKEN"])
