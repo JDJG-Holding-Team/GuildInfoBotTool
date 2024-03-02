@@ -8,7 +8,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import server
+from cogs import EXTENSIONS
+import web
 
 
 class GuildInfoTool(commands.Bot):
@@ -56,6 +57,6 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
-server.app.guild_data = bot.guild_data
-server.runner()
+web.app.guild_data = bot.guild_data
+web.runner()
 bot.run(os.environ["TOKEN"])
