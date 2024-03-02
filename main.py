@@ -1,21 +1,21 @@
 import os
 import sys
 import traceback
-from typing import Any, Optional, Dict
+from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from cogs import EXTENSIONS
 import web
+from cogs import EXTENSIONS
 
 
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        
-        self.guild_data : Dict[int, dict]  = {}
+
+        self.guild_data: Dict[int, dict] = {}
 
         super().__init__(*args, **kwargs)
 
@@ -48,7 +48,9 @@ if not os.getenv("TOKEN"):
     load_dotenv()
 
 bot = GuildInfoTool(
-    command_prefix=commands.when_mentioned_or("g$"), intents=discord.Intents.all(), strip_after_prefix=True
+    command_prefix=commands.when_mentioned_or("g$"),
+    intents=discord.Intents.all(),
+    strip_after_prefix=True,
 )
 
 
@@ -56,6 +58,7 @@ bot = GuildInfoTool(
 async def on_ready():
     print(bot.user)
     print(bot.user.id)
+
 
 web.app.guild_data = bot.guild_data
 web.runner()
