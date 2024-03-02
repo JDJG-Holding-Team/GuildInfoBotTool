@@ -56,6 +56,6 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
-server.app = bot.guild_data
+server.app.guild_data = bot.guild_data
 server.runner()
 bot.run(os.environ["TOKEN"])
