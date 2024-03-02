@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import web
+import server
 from cogs import EXTENSIONS
 
 
@@ -60,6 +60,6 @@ async def on_ready():
     print(bot.user.id)
 
 
-web.app.guild_data = bot.guild_data
-web.runner()
+server.app.guild_data = bot.guild_data
+server.runner()
 bot.run(os.environ["TOKEN"])
