@@ -65,11 +65,5 @@ def run():
 
 
 def runner():
-    asyncio.run(run_app())
-
-async def run_app():
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, 'localhost', 2343)
-    await site.start()
-    await asyncio.Event().wait()
+    server = Thread(target=run)
+    server.start()
