@@ -7,6 +7,8 @@ async def code(request):
 
     code = request.rel_url.query["code"]
 
+    # not sure how to check state.
+
     return web.Response(text="Grabbing guild data so you can use it in command /data")
 
 app = web.Application()
