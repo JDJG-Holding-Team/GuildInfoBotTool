@@ -1,4 +1,4 @@
-discord.py[discord.py[speed]
+discord.py[speed]
 git+https://github.com/Gorialis/jishaku.git
 git+https://github.com/Rapptz/asqlite/
 python-dotenv
