@@ -20,7 +20,7 @@ async def code(request):
 
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
 
-@routes.get("/generate_url/")
+@routes.get("/generate-url/")
 async def generate_url(response):
     # N = random.randint(0, 1000000)
 

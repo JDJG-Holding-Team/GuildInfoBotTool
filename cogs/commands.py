@@ -24,7 +24,8 @@ class Commands(commands.Cog):
     @app_commands.command(description="Setups up oauth", name="setup")
     async def setup(self, interaction: discord.Interaction):
 
-        # calls server to get url
+        # await self.bot.session.get(f"https://localhost:2343/generate-url/client_id?={self.bot.user.id}")
+        # Id forgot how to do arguments.
 
         view = discord.ui.View()
 
