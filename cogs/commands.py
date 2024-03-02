@@ -1,3 +1,4 @@
+import random
 import secrets
 from typing import TYPE_CHECKING
 
@@ -27,6 +28,7 @@ class Commands(commands.Cog):
         redirect_url = os.environ["redirect_url"]
         client_id = self.bot.user.id
 
+        N = random.randint(-1000000, 1000000)
         state = secrets.token_urlsafe(N)
 
         url = discord.utils.oauth_url(
