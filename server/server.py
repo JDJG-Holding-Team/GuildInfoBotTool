@@ -6,13 +6,14 @@ from threading import Thread
 import discord
 from aiohttp import web
 import asyncio
+import asyncio
 
 routes = web.RouteTableDef()
 
 states = {}
 
 
-@routes.get("/code/")
+@routes.get("/code")
 async def code(request):
 
     code = request.rel_url.query.get("code")
@@ -32,7 +33,7 @@ async def code(request):
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
 
 
-@routes.get("/generate-url/")
+@routes.get("/generate-url")
 async def generate_url(response):
 
     redirect_url = os.environ["redirect_url"]
@@ -59,3 +60,5 @@ async def generate_url(response):
 app = web.Application()
 app.add_routes(routes)
 
+def runner():
+    asyncio.run_app(app, host="localhost", port=2343)
