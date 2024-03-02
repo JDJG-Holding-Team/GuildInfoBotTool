@@ -5,6 +5,7 @@ from threading import Thread
 
 import discord
 from aiohttp import web
+import asyncio
 
 routes = web.RouteTableDef()
 
@@ -64,5 +65,13 @@ def run():
 
 
 def runner():
-    server = Thread(target=run)
-    server.start()
+    asyncio.run(run_app())
+
+async def run_app():
+    app = web.Application()
+    app.add_routes(routes)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, 'localhost', 2343)
+    await site.start()
+    await asyncio.Event().wait()
