@@ -36,5 +36,10 @@ class Commands(commands.Cog):
 
         await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
 
+    @app_commands.command(description = "Sends guild data empherally", name="data")
+    async def data(self, interaction: discord.Interaction):
+
+        await interaction.response.send_message("Wip right now", ephemeral = True)
+
 async def setup(bot: GuildInfoTool):
     await bot.add_cog(Commands(bot))
