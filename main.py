@@ -54,5 +54,5 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
-
+B.b()
 bot.run(os.environ["TOKEN"])
