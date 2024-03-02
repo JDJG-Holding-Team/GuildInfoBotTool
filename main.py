@@ -8,6 +8,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from server import server
+
 
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -54,5 +56,5 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
-B.b()
+server.runner()
 bot.run(os.environ["TOKEN"])
