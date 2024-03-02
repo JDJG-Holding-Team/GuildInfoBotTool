@@ -26,7 +26,7 @@ class Commands(commands.Cog):
     async def setup(self, interaction: discord.Interaction):
 
         params = { "client_id" : bot.user.id, "user_id" : interaction.user.id}    
-        url = URL("localhost://2343/generate-url/")
+        url = URL("https://localhost://2343/generate-url/")
         full_url = url.with_query(params)
 
         resp = await self.bot.session(full_url)
