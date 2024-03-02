@@ -34,7 +34,7 @@ class Commands(commands.Cog):
         resp = await self.bot.session.get(full_url)
         data = await resp.json()
 
-        print(data)
+        redirect_url = data["url"]
 
         view = discord.ui.View()
 
