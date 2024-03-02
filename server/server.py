@@ -58,13 +58,3 @@ async def generate_url(response):
 
 app = web.Application()
 app.add_routes(routes)
-
-
-def run():
-    web.run_app(app, host="localhost", port=2343)
-
-
-def runner():
-    server = Thread(target=run)
-    server.start()
-

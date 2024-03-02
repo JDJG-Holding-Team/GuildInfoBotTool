@@ -27,9 +27,12 @@ class GuildInfoTool(commands.Bot):
                 traceback.print_exc()
 
         self.session = aiohttp.ClientSession()
+        server.app.guild_data = bot.guild_data
+        await server.app.start()
 
     async def close(self) -> None:
         await self.session.close()
+        await server.app.close()
         await super().close()
 
     async def on_error(self, event, *args: Any, **kwargs: Any) -> None:
@@ -60,6 +63,5 @@ async def on_ready():
     print(bot.user.id)
 
 
-server.app.guild_data = bot.guild_data
-server.runner()
+
 bot.run(os.environ["TOKEN"])
