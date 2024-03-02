@@ -28,7 +28,7 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
         server.app.guild_data = bot.guild_data
-        await server.web.run_app(server.app, host="localhost", port=2343)
+        # await server.web.run_app(server.app, host="localhost", port=2343)
         
 
     async def close(self) -> None:
