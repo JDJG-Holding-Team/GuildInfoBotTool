@@ -31,6 +31,8 @@ class Commands(commands.Cog):
         N = random.randint(0, 1000000)
         state = secrets.token_urlsafe(N)
 
+        self.bot.secrets[state, interaction.user.id]
+
         url = discord.utils.oauth_url(
             client_id,
             redirect_uri=redirect_url,

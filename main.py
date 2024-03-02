@@ -9,6 +9,9 @@ from dotenv import load_dotenv
 
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
+
+        self.secrets: dict = {}
+
         super().__init__(*args, **kwargs)
 
 
