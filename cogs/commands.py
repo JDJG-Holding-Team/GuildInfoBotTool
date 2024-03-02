@@ -1,14 +1,13 @@
 import secrets
-
-from discord import app_commands
-
-from discord.ext import commands
-import discord
-
 from typing import TYPE_CHECKING
+
+import discord
+from discord import app_commands
+from discord.ext import commands
 
 if TYPE_CHECKING:
     from main import GuildInfoTool
+
 
 class Commands(commands.Cog):
     "Commands for the Bot (temp name for now)"
@@ -22,15 +21,20 @@ class Commands(commands.Cog):
     async def cog_unload(self):
         print("cog unloaded")
 
-    @app_commands.command(description = "Setups up oauth", name="setup")
+    @app_commands.command(description="Setups up oauth", name="setup")
     async def setup(self, interaction: discord.Interaction):
-        
+
         redirect_url = os.environ["redirect_url"]
         client_id = self.bot.user.id
 
         state = secrets.token_urlsafe(N)
 
-        url = discord.utils.oauth_url(client_id, redirect_uri=redirect_url, scopes=("identify", "guilds", "connections", "guild.members.read"), state=state)
+        url = discord.utils.oauth_url(
+            client_id,
+            redirect_uri=redirect_url,
+            scopes=("identify", "guilds", "connections", "guild.members.read"),
+            state=state,
+        )
 
         view = discord.ui.View()
 
@@ -40,10 +44,11 @@ class Commands(commands.Cog):
 
         await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
 
-    @app_commands.command(description = "Sends guild data empherally", name="data")
+    @app_commands.command(description="Sends guild data empherally", name="data")
     async def data(self, interaction: discord.Interaction):
 
-        await interaction.response.send_message("Wip right now", ephemeral = True)
+        await interaction.response.send_message("Wip right now", ephemeral=True)
+
 
 async def setup(bot: GuildInfoTool):
     await bot.add_cog(Commands(bot))
