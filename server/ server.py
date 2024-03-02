@@ -15,10 +15,10 @@ async def code(request):
     state = request.rel_url.query.get("state")
 
     if not code or state:
-        return web.Response(status=401, text="Missing arguments you(need code and state)")
+        return web.Response(status=400, text="Missing arguments you(need code and state)")
 
     if not state in states:
-        return web.Response(status=401, text="invalid state(please don't fake states or please try again)")
+        return web.Response(status=400, text="invalid state(please don't fake states or please try again)")
 
     # send request to discord and have a way of having a bot.session to the discord bot that this calls.
 
@@ -33,7 +33,7 @@ async def generate_url(response):
     user_id = request.rel_url.query.get("user_id")
 
     if not client_id or user_id:
-        return web.Response(status=401, text="Missing arguments you(need client_id and user_id)")
+        return web.Response(status=400, text="Missing arguments you(need client_id and user_id)")
 
     state = secrets.token_urlsafe(32)
 
@@ -46,7 +46,7 @@ async def generate_url(response):
         state=state,
     )
 
-    return web.Response(status="200", text=f"{url}")
+    return web.Response(status=200, text=f"{url}")
 
 
 app = web.Application()

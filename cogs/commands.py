@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord import app_commands
 from discord.ext import commands
+from yarl import URL
 
 if TYPE_CHECKING:
     from main import GuildInfoTool
@@ -24,14 +25,13 @@ class Commands(commands.Cog):
     @app_commands.command(description="Setups up oauth", name="setup")
     async def setup(self, interaction: discord.Interaction):
 
-        # await self.bot.session.get(f"https://localhost:2343/generate-url/client_id?={self.bot.user.id}")
-        # Id forgot how to do arguments.
+        params = { "client_id" : bot.user.id, "user_id" : interaction.user.id}    
+        url = URL("localhost://2343")
+        url.with_query(params)
 
         view = discord.ui.View()
 
         view.add_item(discord.ui.Button(label=f"Setup", url=url, style=discord.ButtonStyle.link))
-
-        # could I get the redirect url via api? probaly not right?
 
         await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
 
