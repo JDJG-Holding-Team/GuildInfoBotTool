@@ -31,8 +31,10 @@ class Commands(commands.Cog):
         url = URL("https://localhost:2343/generate-url/")
         full_url = url.with_query(params)
 
-        resp = await self.bot.session(full_url)
+        resp = await self.bot.session.get(full_url)
         data = await resp.json()
+
+        print(data)
 
         view = discord.ui.View()
 
