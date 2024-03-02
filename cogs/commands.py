@@ -27,7 +27,7 @@ class Commands(commands.Cog):
     @app_commands.command(description="Setups up oauth", name="setup")
     async def setup(self, interaction: discord.Interaction):
 
-        params = {"client_id": bot.user.id, "user_id": interaction.user.id}
+        params = {"client_id": self.bot.user.id, "user_id": interaction.user.id}
         url = URL("https://localhost:2343/generate-url/")
         full_url = url.with_query(params)
 
