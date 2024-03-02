@@ -30,7 +30,7 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=url, style=discord.ButtonStyle.link)
+        view.add_item(discord.ui.Button(label=f"Setup", url=url, style=discord.ButtonStyle.link))
 
         # could I get the redirect url via api? probaly not right?
 
