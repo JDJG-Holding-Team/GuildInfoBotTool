@@ -26,7 +26,9 @@ class Commands(commands.Cog):
         redirect_url = os.environ["redirect_url"]
         client_id = self.bot.user.id
 
-        url = discord.utils.oauth_url(client_id, redirect_uri=redirect_url, scopes=("identify", "guilds", "connections", "guild.members.read"))
+        state = self.id_generator()
+
+        url = discord.utils.oauth_url(client_id, redirect_uri=redirect_url, scopes=("identify", "guilds", "connections", "guild.members.read"), state=state)
 
         view = discord.ui.View()
 
