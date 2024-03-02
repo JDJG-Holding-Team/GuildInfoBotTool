@@ -30,7 +30,6 @@ class Commands(commands.Cog):
         full_url = url.with_query(params)
 
         resp = await self.bot.session(full_url)
-
         data = await resp.json()
 
         view = discord.ui.View()
