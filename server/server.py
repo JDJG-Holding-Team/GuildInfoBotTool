@@ -60,10 +60,10 @@ app = web.Application()
 app.add_routes(routes)
 
 
-def run():
+async def run():
+    
     web.run_app(app, host="localhost", port=2343)
 
 
 def runner():
-    server = Thread(target=run)
-    server.start()
+    asyncio.run(run())
