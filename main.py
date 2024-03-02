@@ -27,8 +27,6 @@ class GuildInfoTool(commands.Bot):
                 traceback.print_exc()
 
         self.session = aiohttp.ClientSession()
-        server.app.guild_data = bot.guild_data
-        # await server.web.run_app(server.app, host="localhost", port=2343)
         
 
     async def close(self) -> None:
@@ -62,5 +60,5 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
-
+server.app["guild_data"] = bot.guild_data
 bot.run(os.environ["TOKEN"])

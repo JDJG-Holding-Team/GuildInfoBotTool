@@ -30,6 +30,8 @@ async def code(request):
 
     # send request to discord and have a way of having a bot.session to the discord bot that this calls.
 
+    # request.app["guild_data"][user_id] = data
+
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
 
 
