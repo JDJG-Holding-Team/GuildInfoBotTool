@@ -1,5 +1,4 @@
 import random
-import secrets
 from typing import TYPE_CHECKING
 
 import discord
@@ -25,20 +24,7 @@ class Commands(commands.Cog):
     @app_commands.command(description="Setups up oauth", name="setup")
     async def setup(self, interaction: discord.Interaction):
 
-        redirect_url = os.environ["redirect_url"]
-        client_id = self.bot.user.id
-
-        N = random.randint(0, 1000000)
-        state = secrets.token_urlsafe(N)
-
-        self.bot.secrets[state, interaction.user.id]
-
-        url = discord.utils.oauth_url(
-            client_id,
-            redirect_uri=redirect_url,
-            scopes=("identify", "guilds", "connections", "guild.members.read"),
-            state=state,
-        )
+        # calls server to get url
 
         view = discord.ui.View()
 
