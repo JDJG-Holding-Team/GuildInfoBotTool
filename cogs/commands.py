@@ -1,3 +1,5 @@
+import secrets
+
 from discord import app_commands
 
 from discord.ext import commands
@@ -26,7 +28,7 @@ class Commands(commands.Cog):
         redirect_url = os.environ["redirect_url"]
         client_id = self.bot.user.id
 
-        state = self.id_generator()
+        state = secrets.token_urlsafe(N)
 
         url = discord.utils.oauth_url(client_id, redirect_uri=redirect_url, scopes=("identify", "guilds", "connections", "guild.members.read"), state=state)
 
