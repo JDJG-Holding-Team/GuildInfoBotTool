@@ -24,15 +24,12 @@ async def code(request):
 
 @routes.get("/generate-url/")
 async def generate_url(response):
-    # N = random.randint(0, 1000000)
-
-    # N could be handled better.
 
     redirect_url = os.environ["redirect_url"]
     client_id = request.rel_url.query["client_id"]
     user_id = request.rel_url.query["user_id"]
 
-    state = secrets.token_urlsafe(N)
+    state = secrets.token_urlsafe(32)
 
     states[state, user_id]
 
