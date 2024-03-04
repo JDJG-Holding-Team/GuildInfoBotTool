@@ -1,0 +1,4 @@
+# idk where other stuff or where to have it autorestart on host restart.
+
+env_file:
+  - .env
