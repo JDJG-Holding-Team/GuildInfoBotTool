@@ -2,7 +2,7 @@ version: "3"
 services:
   oauth-bot:
     image: python:3.11
-    command: bash -c "pip install -r requirements.txt && python main.py"
+    command: bash -c "cd app && pip install -r requirements.txt && python main.py"
     restart: unless-stopped
     volumes:
       - ./:/app  # Mounts your local project directory to the container's /app directory
