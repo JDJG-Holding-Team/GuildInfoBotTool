@@ -1,5 +1,5 @@
 services:
-    oauth-bot:  # Replace with your desired service name
+    oauth-bot:
       image: python:3.11
       restart: always  # Ensures automatic restarts on container exit
       volumes:
