@@ -27,10 +27,16 @@ class GuildInfoTool(commands.Bot):
                 traceback.print_exc()
 
         self.session = aiohttp.ClientSession()
-        
+
+        await server.runner.setup()
+        await server.site.start()
 
     async def close(self) -> None:
         await self.session.close()
+
+        await server.runner.cleanup()
+        await server.site.close()
+
         await super().close()
 
     async def on_error(self, event, *args: Any, **kwargs: Any) -> None:
