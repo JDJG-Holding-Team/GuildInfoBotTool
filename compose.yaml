@@ -1,5 +1,3 @@
-version: "0.0.1"
-
 services:
   oauth-bot:  # Replace with your desired service name
     image: python:3.11
