@@ -28,14 +28,16 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        await server.runner.setup()
-        await server.site.start()
+        self.runner = web.AppRunner(app)
+        await self.runner.setup()
+        self.site = web.TCPSite(runner, host="localhost", port=2343)
+        await self.site.start()
 
     async def close(self) -> None:
         await self.session.close()
 
-        await server.runner.cleanup()
-        await server.site.close()
+        await self.runner.cleanup()
+        await self.site.close()
 
         await super().close()
 

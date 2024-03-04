@@ -61,6 +61,3 @@ async def generate_url(response):
 
 app = web.Application()
 app.add_routes(routes)
-
-runner = web.AppRunner(app)
-site = web.TCPSite(runner, host="localhost", port=2343)
