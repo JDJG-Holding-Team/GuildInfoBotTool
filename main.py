@@ -30,7 +30,7 @@ class GuildInfoTool(commands.Bot):
         self.session = aiohttp.ClientSession()
 
         server.app["guild_data"] = self.guild_data
-        server.app.add_routes(server.routes)
+        
         self.runner = aiohttp.web.AppRunner(server.app)
         await self.runner.setup()
         self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=3000)
