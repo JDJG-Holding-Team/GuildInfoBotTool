@@ -19,10 +19,10 @@ async def hello(request):
 @routes.get("/code")
 async def code(request):
 
-    code = request.rel_url.query.get("code")
+    _code = request.rel_url.query.get("code")
     state = request.rel_url.query.get("state")
 
-    if not code or state:
+    if not _code or state:
         return web.Response(status=400, text="Missing arguments you(need code and state)")
 
     if not state in states:
