@@ -29,9 +29,9 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        server.app["guild_data"] = self.guild_data
-        
-        self.runner = aiohttp.web.AppRunner(server.app)
+        app = server.app
+        app["guild_data"] = self.guild_data
+        self.runner = aiohttp.web.AppRunner(app)
         await self.runner.setup()
         self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=3000)
         asyncio.create_task(self.site.start())
