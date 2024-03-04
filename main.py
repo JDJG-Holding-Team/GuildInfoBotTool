@@ -28,9 +28,10 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        self.runner = web.AppRunner(app)
+        server.app["guild_data"] = self.guild_data
+        self.runner = aiohttp.web.AppRunner(server.app)
         await self.runner.setup()
-        self.site = web.TCPSite(runner, host="localhost", port=2343)
+        self.site = web.TCPSite(self.runner, host="localhost", port=2343)
         await self.site.start()
 
     async def close(self) -> None:
@@ -68,5 +69,5 @@ async def on_ready():
     print(bot.user)
     print(bot.user.id)
 
-server.app["guild_data"] = bot.guild_data
+
 bot.run(os.environ["TOKEN"])
