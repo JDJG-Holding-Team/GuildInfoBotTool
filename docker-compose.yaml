@@ -1,4 +1,4 @@
-version: "3"
+
 services:
   oauth-bot:
     image: python:3.11
