@@ -32,7 +32,7 @@ class GuildInfoTool(commands.Bot):
         server.app["guild_data"] = self.guild_data
         self.runner = aiohttp.web.AppRunner(server.app)
         await self.runner.setup()
-        self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=2343)
+        self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=3000)
         asyncio.create_task(self.site.start())
 
     async def close(self) -> None:
