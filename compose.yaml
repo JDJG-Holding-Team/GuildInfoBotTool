@@ -1,4 +1,14 @@
-# idk where other stuff or where to have it autorestart on host restart.
+version: "0.0.1"
 
-env_file:
-  - .env
+services:
+  oauth-bot:  # Replace with your desired service name
+    image: python:3.11
+    restart: always  # Ensures automatic restarts on container exit
+    volumes:
+      - ./:/app  # Mounts your local project directory to the container's /app directory
+    env_file: .env  # Uses the .env file for environment variables
+    ports:
+      - "3000:3000"  # Maps host port 3000 to container port 3000
+
+    # Uncomment the following line if you want automatic restart on host reboot (use with caution)
+    # restart: unless-stopped
