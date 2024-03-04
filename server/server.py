@@ -12,8 +12,8 @@ routes = web.RouteTableDef()
 
 states = {}
 
-@routes.get("/")
-async def welcome(request):
+@routes.get('/')
+async def hello(request):
     return web.Response(status="200", text="Welcome Please let the bot direct you to the right spots")
 
 @routes.get("/code")
