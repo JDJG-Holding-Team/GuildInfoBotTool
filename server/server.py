@@ -63,7 +63,7 @@ async def generate_url(response):
     )
 
     data = {"url": url}
-    return web.Response(data, status=200, text=url)
+    return web.json_response(data, status=200, text=url)
 
 
 app = web.Application()
