@@ -14,8 +14,7 @@ states = {}
 
 @routes.get("/")
 async def hello(request):
-    data = {"message": "Welcome Please let the bot direct you to the right spots"}
-    return web.json_response(status="200", text="Welcome Please let the bot direct you to the right spots")
+    return web.Response(text="Welcome Please let the bot direct you to the right spots")
 
 @routes.get("/code")
 async def code(request):
@@ -49,7 +48,7 @@ async def generate_url(response):
 
     if not client_id or user_id:
         data = {"error": "Missing arguments you(need client_id and user_id)"}
-        return web.json_response(data, status=400, text="Missing arguments you(need client_id and user_id)")
+        return web.json_response(data, status=400)
 
     state = secrets.token_urlsafe(32)
 
@@ -63,7 +62,7 @@ async def generate_url(response):
     )
 
     data = {"url": url}
-    return web.json_response(data, status=200, text=url)
+    return web.json_response(data, status=200)
 
 
 app = web.Application()
