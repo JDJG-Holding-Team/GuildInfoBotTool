@@ -46,7 +46,8 @@ async def generate_url(response):
     user_id = response.rel_url.query.get("user_id")
 
     if not client_id or user_id:
-        return web.Response(status=400, text="Missing arguments you(need client_id and user_id)")
+        data = {"error": "Missing arguments you(need client_id and user_id)"}
+        return web.json_response(data, status=400, text="Missing arguments you(need client_id and user_id)")
 
     state = secrets.token_urlsafe(32)
 
@@ -59,7 +60,8 @@ async def generate_url(response):
         state=state,
     )
 
-    return web.Response(status=200, text=f"{url}")
+    data = {"url": f"{url}"}
+    return web.Response(data, status=200, text=f"{url}")
 
 
 app = web.Application()
