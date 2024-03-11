@@ -15,7 +15,7 @@ states = {}
 @routes.get("/")
 async def hello(request):
     data = {"message": "Welcome Please let the bot direct you to the right spots"}
-    return web.json_response(data, status="200", text="Welcome Please let the bot direct you to the right spots")
+    return web.json_response(status="200", text="Welcome Please let the bot direct you to the right spots")
 
 @routes.get("/code")
 async def code(request):
