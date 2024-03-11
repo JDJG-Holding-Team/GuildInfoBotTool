@@ -14,7 +14,8 @@ states = {}
 
 @routes.get("/")
 async def hello(request):
-    return web.Response(status="200", text="Welcome Please let the bot direct you to the right spots")
+    data = {"message": "Welcome Please let the bot direct you to the right spots"}
+    return web.json_response(data, status="200", text="Welcome Please let the bot direct you to the right spots")
 
 @routes.get("/code")
 async def code(request):
@@ -36,6 +37,7 @@ async def code(request):
     # request.app["guild_data"][user_id] = data
 
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
+    # will be json response in a bit.
 
 
 @routes.get("/generate-url")
@@ -60,8 +62,8 @@ async def generate_url(response):
         state=state,
     )
 
-    data = {"url": f"{url}"}
-    return web.Response(data, status=200, text=f"{url}")
+    data = {"url": url}
+    return web.Response(data, status=200, text=url)
 
 
 app = web.Application()
