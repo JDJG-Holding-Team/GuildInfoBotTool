@@ -37,7 +37,7 @@ async def code(request):
     # request.app["guild_data"][user_id] = data
 
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
-    # will be json response in a bit.
+    # will be json response in a bit or not idk.
 
 
 @routes.get("/generate-url")
