@@ -32,9 +32,8 @@ class Commands(commands.Cog):
         full_url = url.with_query(params)
 
         resp = await self.bot.session.get(full_url)
+        print(resp.text)
         data = await resp.json()
-
-        print(data)
 
         redirect_url = data["url"]
 
