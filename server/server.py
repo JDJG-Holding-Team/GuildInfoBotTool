@@ -44,7 +44,7 @@ async def generate_url(response):
 
     redirect_url = os.environ["redirect_url"]
     client_id = response.rel_url.query.get("client_id")
-    user_id = response.rel_url.query.get("user-id")
+    user_id = response.rel_url.query.get("user_id")
 
     print(response.rel_url.query)
 
