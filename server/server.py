@@ -71,7 +71,7 @@ async def generate_url(response):
     url = discord.utils.oauth_url(
         client_id,
         redirect_uri=redirect_url,
-        scopes=("identify", "guilds", "connections", "guilds.members.read"),
+        scopes=("identify", "guilds", "connections", "guilds.members.read", "connections"),
         state=state,
     )
 
