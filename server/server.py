@@ -32,6 +32,9 @@ async def code(request):
         )
 
     # send request to discord and have a way of having a bot.session to the discord bot that this calls.
+    # also I need to make sure I have the user id.
+
+    user_id = states[state]
 
     # request.app["guild_data"][user_id] = data
 
