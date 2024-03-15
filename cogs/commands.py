@@ -35,8 +35,6 @@ class Commands(commands.Cog):
         
         data = await resp.json()
 
-        print(data)
-
         redirect_url = data["url"]
 
         view = discord.ui.View()
