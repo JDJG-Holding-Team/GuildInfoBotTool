@@ -46,13 +46,19 @@ async def generate_url(response):
     client_id = response.rel_url.query.get("client_id")
     user_id = response.rel_url.query.get("user_id")
 
-    print(response.rel_url.query["user_id"])
-
     if not client_id or not user_id:
         data = {"error": "Missing arguments you(need client_id and user_id)"}
         return web.json_response(data, status=400)
 
     state = secrets.token_urlsafe(32)
+
+    if not client_id.isdigit():
+        data = {"error": "Invalid integer for client_id"}
+        return web.json_response(data, status=401)
+    
+    if not user_id.isdigit():
+        data = {"error": "Invalid integer for user_id"}
+        return web.json_response(data, status=401)
 
     states[state] = user_id
 
