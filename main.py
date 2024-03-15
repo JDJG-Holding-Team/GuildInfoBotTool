@@ -31,6 +31,7 @@ class GuildInfoTool(commands.Bot):
 
         app = server.app
         app["guild_data"] = self.guild_data
+        app["aiohttp_session"] = self.session
         self.runner = aiohttp.web.AppRunner(app)
         await self.runner.setup()
         self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=3000)

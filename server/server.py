@@ -6,7 +6,6 @@ from threading import Thread
 import discord
 from aiohttp import web
 import asyncio
-import asyncio
 
 routes = web.RouteTableDef()
 
@@ -35,6 +34,24 @@ async def code(request):
     # also I need to make sure I have the user id.
 
     user_id = states[state]
+
+    api_endpoint = "https://discord.com/api/v10"
+    # maybe grab this from dpy?
+
+    client_id = os.environ["client_id"]
+    client_secret = os.environ["client_user"]
+
+    session = request.app["aiohttp_session"]
+    # could be done better honestly
+
+    redirect_uri = os.environ["redirect_url"]
+
+    data = {
+        'grant_type': 'authorization_code',
+        'code': _code,
+        'redirect_uri': redirect_uri
+    }
+    await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=(client_id, client_secret))
 
     # request.app["guild_data"][user_id] = data
 
