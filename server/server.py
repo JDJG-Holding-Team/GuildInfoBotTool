@@ -59,6 +59,9 @@ async def generate_url(response):
     if not user_id.isdigit():
         data = {"error": "Invalid integer for user_id"}
         return web.json_response(data, status=401)
+    
+    user_id = int(user_id)
+    client_id = int(client_id)
 
     states[state] = user_id
 
