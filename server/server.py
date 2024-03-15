@@ -22,6 +22,8 @@ async def code(request):
     _code = request.rel_url.query.get("code")
     state = request.rel_url.query.get("state")
 
+    print(request.rel_url.query)
+
     if not _code or state:
         return web.Response(status=400, text="Missing arguments you(need code and state)")
 
