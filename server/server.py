@@ -48,7 +48,7 @@ async def generate_url(response):
 
     print(response.rel_url.query["user_id"])
 
-    if not client_id or user_id:
+    if not client_id or not user_id:
         data = {"error": "Missing arguments you(need client_id and user_id)"}
         return web.json_response(data, status=400)
 
