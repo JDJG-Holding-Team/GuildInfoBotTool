@@ -51,7 +51,12 @@ async def code(request):
         'code': _code,
         'redirect_uri': redirect_uri
     }
-    await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=(client_id, client_secret))
+    resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=(client_id, client_secret))
+
+    if not resp.ok:
+        return web.Response(status="401", text="Grabbing data failed.")
+    
+    data_response = await resp.json()
 
     # request.app["guild_data"][user_id] = data
 
