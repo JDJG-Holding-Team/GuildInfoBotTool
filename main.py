@@ -41,7 +41,6 @@ class GuildInfoTool(commands.Bot):
         await self.session.close()
 
         await self.runner.cleanup()
-        await self.site.stop()
 
         await super().close()
 
