@@ -158,9 +158,7 @@ async def generate_url(response):
 
     states[state] = user_id
 
-    # redirect_url = 
-
-    redirect_enum = RedirectEnum(redirect_uri)
+    redirect_enum = RedirectEnum(redirect_int)
 
     match redirect_enum:
         case RedirectEnum.regular:
