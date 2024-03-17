@@ -142,6 +142,13 @@ class Commands(commands.Cog):
 
         await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
 
+    @app_commands.command(description="sends link to bot's source code", name="source")
+    async def source(self, interaction: discord.Interaction):
+
+        view = discord.ui.View()
+        view.add_item(discord.ui.Button(label=f"Source", url="https://github.com/JDJG-Holding-Team/GuildInfoBotTool", style=discord.ButtonStyle.link))
+        await interaction.response.send_message("Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view)
+
 
 async def setup(bot: GuildInfoTool):
     await bot.add_cog(Commands(bot))
