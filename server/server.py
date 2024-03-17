@@ -113,7 +113,7 @@ async def code(request):
     complete_data["user"] = user_data
     complete_data["app"] = app_data
     complete_data["guilds"] = guilds
-    complete_data["collections"] = collections
+    complete_data["connections"] = connections
 
     request.app["guild_data"][user_id] = complete_data
 
