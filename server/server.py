@@ -98,7 +98,7 @@ async def code(request):
     nicknames = {}
     for guild in guilds:
         # object type for guild may make this easier, to make guild_id to guild.id
-        guild_id = guild["int"]
+        guild_id = guild["id"]
         resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
 
         if not resp.ok:
