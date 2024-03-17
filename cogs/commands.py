@@ -83,7 +83,7 @@ class Commands(commands.Cog):
 
             # does f even work with it?
 
-            async with asqlite.connect(f.file) as conn:
+            async with asqlite.connect(f.name) as conn:
                 async with conn.cursor() as cursor:
                     print(conn)
 
