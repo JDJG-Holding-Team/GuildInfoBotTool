@@ -101,6 +101,8 @@ async def code(request):
         guild_id = guild["id"]
         resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
 
+        print(resp.text)
+
         if not resp.ok:
             return web.Response(status="401", text="Grabbing data failed.")
 
