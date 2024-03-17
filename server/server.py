@@ -45,7 +45,7 @@ async def code(request):
     session = request.app["aiohttp_session"]
     # could be done better honestly
 
-    redirect_uri = request.real_url
+    redirect_uri = request.rel_url
     print(request.url)
 
     data = {
