@@ -249,9 +249,11 @@ async def full_data(request):
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
 
-    web.FileResponse(path=json_response, status=200, )
-
+    # web.FileResponse(path=json_response, status=200, )
     return web.Response(status=200, text="Stats in the future")
+    
+    # find out how to download the json and also to respond with the stats via html
+
     # will be json response in a bit or not idk.
 
 class RedirectEnum(enum.IntEnum):
@@ -310,6 +312,8 @@ async def generate_url(response):
         scopes=("identify", "connections", "guilds", "guilds.members.read"),
         state=state,
     )
+
+    # these scopes should be the only ones I need.
 
     data = {"url": url}
     return web.json_response(data, status=200)
