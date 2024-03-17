@@ -52,8 +52,8 @@ async def code(request):
         "redirect_uri": redirect_uri
     }
 
-    auth = (client_id, client_secret)
-    resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=auth)
+    
+    resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret))
 
     if not resp.ok:
         return web.Response(status="401", text="Grabbing data failed.")
