@@ -89,7 +89,7 @@ class Commands(commands.Cog):
 
                 # I am unsure about what tables in execute right now.
 
-            sqlite_file = discord.File(f.file, filename="data.db")
+            sqlite_file = discord.File(f.name, filename="data.db")
             # direct f will not it may need some fp I am unsure how to get it to work.
 
             files = [file, sqlite_file]
