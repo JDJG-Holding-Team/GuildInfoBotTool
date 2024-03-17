@@ -147,7 +147,7 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
         view.add_item(discord.ui.Button(label=f"Source", url="https://github.com/JDJG-Holding-Team/GuildInfoBotTool", style=discord.ButtonStyle.link))
-        await interaction.response.send_message("Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view, ephemeral=True)
+        await interaction.response.send_message("Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view)
 
 
 async def setup(bot: GuildInfoTool):
