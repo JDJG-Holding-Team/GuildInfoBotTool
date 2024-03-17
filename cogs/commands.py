@@ -45,13 +45,13 @@ class Commands(commands.Cog):
 
         view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
-        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
+        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view, ephemeral=True)
 
     @app_commands.command(description="Sends guild data empherally", name="data")
     async def data(self, interaction: discord.Interaction):
 
         if not self.bot.guild_data.get(interaction.user.id):
-            return await interaction.response.send_message("You have no data stored with this right now")
+            return await interaction.response.send_message("You have no data stored with this right now", ephemeral=True)
 
         data = self.bot.guild_data[interaction.user.id]
         oauth_user = data["user"]
@@ -67,7 +67,7 @@ class Commands(commands.Cog):
             await owner.send(f"Hey boss {interaction.user} had wrong data you should check this")
             # make a webhook to send this in the info with a ping and also link to the line in the source code ie jdbot source may be helpful for this.
 
-            return await interaction.response.send_message("Someone you got the incorrect data assigned to the wrong person")
+            return await interaction.response.send_message("Someone you got the incorrect data assigned to the wrong person", ephemeral=True)
         
         json_string = json.dumps(data, indent=4)
         json_response = io.StringIO(json_string)
@@ -99,7 +99,7 @@ class Commands(commands.Cog):
     @app_commands.command(description="Clears data", name="clear-data")
     async def clear_data(self, interaction: discord.Interaction):
         if not self.bot.guild_data.get(interaction.user.id):
-            return await interaction.response.send_message("You have no data stored with this right now")
+            return await interaction.response.send_message("You have no data stored with this right now", ephemeral=True)
         
         del self.bot.guild_data[interaction.user.id]
         # add some validation will not sync in till case.
@@ -121,7 +121,7 @@ class Commands(commands.Cog):
 
         view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
-        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
+        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view, ephemeral=True)
 
     @app_commands.command(description="Setups up oauth but sends stats to the site only", name="stats-setup")
     async def stats_setup(self, interaction: discord.Interaction):
@@ -140,14 +140,14 @@ class Commands(commands.Cog):
 
         view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
-        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view)
+        await interaction.response.send_message("Please Click on the button url to authorize oauth", view=view, ephemeral=True)
 
     @app_commands.command(description="sends link to bot's source code", name="source")
     async def source(self, interaction: discord.Interaction):
 
         view = discord.ui.View()
         view.add_item(discord.ui.Button(label=f"Source", url="https://github.com/JDJG-Holding-Team/GuildInfoBotTool", style=discord.ButtonStyle.link))
-        await interaction.response.send_message("Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view)
+        await interaction.response.send_message("Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view, ephemeral=True)
 
 
 async def setup(bot: GuildInfoTool):
