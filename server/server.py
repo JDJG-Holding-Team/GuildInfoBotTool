@@ -94,20 +94,17 @@ async def code(request):
 
     guilds = await resp.json()
 
-
-    nicknames = {}
-    for guild in guilds:
+    # nicknames = {}
+    # for guild in guilds:
         # object type for guild may make this easier, to make guild_id to guild.id
-        guild_id = guild["id"]
-        resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
+        # guild_id = guild["id"]
+        # resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
 
-        print(resp.text)
+        # if not resp.ok:
+            # return web.Response(status="401", text="Grabbing data failed.")
 
-        if not resp.ok:
-            return web.Response(status="401", text="Grabbing data failed.")
-
-        guild_info = await resp.json()
-        nicknames[guild_id] = guild_info
+        # guild_info = await resp.json()
+        # nicknames[guild_id] = guild_info
         # guild.id may be better.
 
     # with_counts may be useful, guilds
@@ -132,7 +129,8 @@ async def code(request):
     complete_data["app"] = app_data
     complete_data["guilds"] = guilds
     complete_data["connections"] = connections
-    complete_data["nicknames"] = nicknames
+    # complete_data["nicknames"] = nicknames
+    # nicknames too many requests
 
     request.app["guild_data"][user_id] = complete_data
 
