@@ -1,10 +1,11 @@
 More will appear in the future and this will be an MD
 
 Create a discord bot and add sites to oauth 
-you'll want 3 sites
+you'll want to add all the sites to your redirect_uri in the oauth section of your application
 
 1. redirect_url in the env is the general oauth that will also receive data that will be seen with /data
 2. website_redirect_url is the env key value for the oauth page that will download your data with json and sqlite (will also have stats)
 3. stats_redirect_url is the env value for stats only appearing, not everyone can read the json.
 
 More coming soon.
+
