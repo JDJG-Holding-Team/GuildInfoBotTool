@@ -94,6 +94,20 @@ async def code(request):
 
     guilds = await resp.json()
 
+
+    nicknames = {}
+    for guild in guilds:
+        # object type for guild may make this easier, to make guild_id to guild.id
+        guild_id = guild["int"]
+        resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
+
+        if not resp.ok:
+            return web.Response(status="401", text="Grabbing data failed.")
+
+        guild_info = await resp.json()
+        nicknames[guild_id] = guild_info
+        # guild.id may be better.
+
     # with_counts may be useful, guilds
     # no email is needed right?
     # I don't know if people want email stats.
@@ -116,6 +130,7 @@ async def code(request):
     complete_data["app"] = app_data
     complete_data["guilds"] = guilds
     complete_data["connections"] = connections
+    complete_data["nicknames"] = nicknames
 
     request.app["guild_data"][user_id] = complete_data
 
