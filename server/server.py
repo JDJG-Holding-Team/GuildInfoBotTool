@@ -51,7 +51,9 @@ async def code(request):
         "code" : _code,
         "redirect_uri": redirect_uri
     }
-    resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=(client_id, client_secret))
+
+    auth = (client_id, client_secret)
+    resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=auth)
 
     if not resp.ok:
         return web.Response(status="401", text="Grabbing data failed.")
