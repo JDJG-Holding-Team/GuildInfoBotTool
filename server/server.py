@@ -1,4 +1,5 @@
 import asyncio
+import enum
 import os
 import random
 import secrets
@@ -86,7 +87,7 @@ async def code(request):
     # indentify?
     # maybe more data below:
 
-    resp = await session.get(f"{api_endpoint}/users/@me/guilds", headers=headers)
+    resp = await session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers)
 
     if not resp.ok:
         return web.Response(status="401", text="Grabbing data failed.")
@@ -121,10 +122,15 @@ async def code(request):
     # will be json response in a bit or not idk.
 
 
+class RedirectEnum(enum.IntEnum):
+    regular = 0
+    website = 1
+    stats = 2
+
 @routes.get("/generate-url")
 async def generate_url(response):
 
-    redirect_url = os.environ["redirect_url"]
+    redirect_int = response.rel_url.query.get("redirect_int")
     client_id = response.rel_url.query.get("client_id")
     user_id = response.rel_url.query.get("user_id")
 
@@ -133,6 +139,10 @@ async def generate_url(response):
         return web.json_response(data, status=400)
 
     state = secrets.token_urlsafe(32)
+
+    if not redirect_int.isdigit():
+        data = {"error": "Invalid integer for redirect_int"}
+        return web.json_response(data, status=401)
 
     if not client_id.isdigit():
         data = {"error": "Invalid integer for client_id"}
@@ -144,8 +154,25 @@ async def generate_url(response):
     
     user_id = int(user_id)
     client_id = int(client_id)
+    redirect_int = int(redirect_int)
 
     states[state] = user_id
+
+    # redirect_url = 
+
+    redirect_enum = RedirectEnum(redirect_uri)
+
+    match redirect_enum:
+        case RedirectEnum.regular:
+            redirect_url = os.environ["redirect_url"]
+
+        case RedirectEnum.wesbsite:
+            redirect_url = os.environ["website_redirect_url"]
+
+        case RedirectEnum.stats:
+            redirect_url = os.environ["stats_redirect_url"]
+
+    # this looks kind of funky ngl
 
     url = discord.utils.oauth_url(
         client_id,
