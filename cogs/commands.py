@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import io
 import random
+import json
 from typing import TYPE_CHECKING
 
 import discord
@@ -61,6 +63,10 @@ class Commands(commands.Cog):
             # make a webhook to send this in the info with a ping and also link to the line in the source code ie jdbot source may be helpful for this.
 
             return await interaction.response.send_message("Someone you got the incorrect data sent to the wrong person")
+        
+        json_string = json.dumps(data, indent=4)
+        json_response = io.StringIO(json_string)
+        file = discord.File(json_response, filename="user_data.json")
 
         await interaction.response.send_message("Here's your data(stats will be around in the future)", file=file, ephemeral=True)
 
