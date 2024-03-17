@@ -73,8 +73,9 @@ class Commands(commands.Cog):
         json_response = io.StringIO(json_string)
         file = discord.File(json_response, filename="user_data.json")
 
-        with tempfile.NamedTemporaryFile(mode="w", delete_on_close=True) as f:
+        with tempfile.NamedTemporaryFile(mode="w") as f:
             # delete on close may be already used
+            # delete is necessary possibly but idk, I just know delete_on_close=True isn't in python 3.11
             # is delete needed?
             # appraently it's also autodeleted
             # https://stackoverflow.com/questions/11043372/how-to-use-tempfile-namedtemporaryfile
