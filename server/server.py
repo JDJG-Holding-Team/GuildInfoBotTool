@@ -63,29 +63,58 @@ async def code(request):
 
     # make sure we all get all data under ("identify", "guilds", "connections", "guilds.members.read", "connections")
 
-    headers = {}
+    headers = {"authorization" : f"{token_type} {access_token}"}
+    # not sure if that's right but it seems to match.
 
-    user_data = await session.get(f"{api_endpoint}/users/@me", headers=headers)
-    app_data = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
+    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
+
+    if not resp.ok:
+        return web.Response(status="401", text="Grabbing data failed.")
+
+    user_data = await resp.json()
+
+    resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
+
+    if not resp.ok:
+        return web.Response(status="401", text="Grabbing data failed.")
+
+    app_data = await resp.json()
 
     # https://discord.com/developers/docs/topics/oauth2#get-current-authorization-information
 
     # indentify?
     # maybe more data below:
 
-    guild_data = await session.get(f"{api_endpoint}/users/@me/guilds", headers=headers)
+    resp = await session.get(f"{api_endpoint}/users/@me/guilds", headers=headers)
+
+    if not resp.ok:
+        return web.Response(status="401", text="Grabbing data failed.")
+
+    guilds = await resp.json()
+
     # with_counts may be useful, guilds
     # no email is needed right?
 
     # https://discord.com/developers/docs/resources/user#get-current-user-guild-member
     # I did put something in for nickname data, tied to guild.members.read.
 
-    connections_data = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
-    # connections
+    resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
 
+    if not resp.ok:
+        return web.Response(status="401", text="Grabbing data failed.")
+
+    connections = await resp.json()
+
+    # connections
     # are there more things for all the other data?
 
-    # request.app["guild_data"][user_id] = data
+    complete_data = {}
+    complete_data["user"] = user_data
+    complete_data["app"] = app_data
+    complete_data["guilds"] = guilds
+    complete_data["collections"] = collections
+
+    request.app["guild_data"][user_id] = complete_data
 
     return web.Response(status="200", text="Grabbing guild data so you can use it in command /data")
     # will be json response in a bit or not idk.

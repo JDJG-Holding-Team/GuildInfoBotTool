@@ -46,7 +46,23 @@ class Commands(commands.Cog):
     @app_commands.command(description="Sends guild data empherally", name="data")
     async def data(self, interaction: discord.Interaction):
 
-        await interaction.response.send_message("Wip right now", ephemeral=True)
+        data = self.bot.guild_data[interaction.user.id]
+        oauth_user = data["user"]
+
+        user = self.bot.get_user(int(oauth_user["id"]))
+
+        if user != interaction.user:
+
+            info = await self.bot.application_info()
+            owner_id = info.team.owner_id if info.team else info.owner.id
+            owner = self.bot.get_user(owner_id)
+
+            await owner.send(f"Hey boss {interaction.user} had wrong data you should check this")
+            # make a webhook to send this in the info with a ping and also link to the line in the source code ie jdbot source may be helpful for this.
+
+            return await interaction.response.send_message("Someone you got the incorrect data sent to the wrong person")
+
+        await interaction.response.send_message("Here's your data(stats will be around in the future)", file=file, ephemeral=True)
 
 
 async def setup(bot: GuildInfoTool):
