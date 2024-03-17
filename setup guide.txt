@@ -8,4 +8,3 @@ you'll want to add all the sites to your redirect_uri in the oauth section of yo
 3. stats_redirect_url is the env value for stats only appearing, not everyone can read the json.
 
 More coming soon.
-
