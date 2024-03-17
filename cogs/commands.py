@@ -89,13 +89,12 @@ class Commands(commands.Cog):
 
                 # I am unsure about what tables in execute right now.
 
-            # sqlite_file = discord.File(f, "data.db")
+            sqlite_file = discord.File(f, filename="data.db")
             # direct f will not it may need some fp I am unsure how to get it to work.
 
-            sqlite_file = file
-            # quick fix rn.
+            files = [file, sqlite_file]
 
-        await interaction.response.send_message("Here's your data(stats will be around in the future)", files=[file, sqlite_file], ephemeral=True)
+        await interaction.response.send_message("Here's your data(stats will be around in the future)", files=files, ephemeral=True)
 
     @app_commands.command(description="Clears data", name="clear-data")
     async def clear_data(self, interaction: discord.Interaction):
