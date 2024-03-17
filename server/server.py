@@ -96,6 +96,7 @@ async def code(request):
 
     # with_counts may be useful, guilds
     # no email is needed right?
+    # I don't know if people want email stats.
 
     # https://discord.com/developers/docs/resources/user#get-current-user-guild-member
     # I did put something in for nickname data, tied to guild.members.read.
