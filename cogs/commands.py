@@ -48,6 +48,9 @@ class Commands(commands.Cog):
     @app_commands.command(description="Sends guild data empherally", name="data")
     async def data(self, interaction: discord.Interaction):
 
+        if not self.bot.guild_data.get(interaction.user.id):
+            return await interaction.response.send_message("You have no data stored with this right now")
+
         data = self.bot.guild_data[interaction.user.id]
         oauth_user = data["user"]
 
@@ -62,13 +65,21 @@ class Commands(commands.Cog):
             await owner.send(f"Hey boss {interaction.user} had wrong data you should check this")
             # make a webhook to send this in the info with a ping and also link to the line in the source code ie jdbot source may be helpful for this.
 
-            return await interaction.response.send_message("Someone you got the incorrect data sent to the wrong person")
+            return await interaction.response.send_message("Someone you got the incorrect data assigned to the wrong person")
         
         json_string = json.dumps(data, indent=4)
         json_response = io.StringIO(json_string)
         file = discord.File(json_response, filename="user_data.json")
 
         await interaction.response.send_message("Here's your data(stats will be around in the future)", file=file, ephemeral=True)
+
+    @app_commands.command(description="Clears data", name="clear-data")
+    async def clear_data(self, interaction: discord.Interaction):
+        if not self.bot.guild_data.get(interaction.user.id):
+            return await interaction.response.send_message("You have no data stored with this right now")
+        
+        del self.bot.guild_data[interaction.user.id]
+        # add some validation will not sync in till case.
 
 
 async def setup(bot: GuildInfoTool):
