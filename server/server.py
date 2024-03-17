@@ -45,7 +45,8 @@ async def code(request):
     session = request.app["aiohttp_session"]
     # could be done better honestly
 
-    redirect_uri = os.environ["redirect_url"]
+    redirect_uri = request.real_url
+    print(request.url)
 
     data = {
         "grant_type": "authorization_code",
