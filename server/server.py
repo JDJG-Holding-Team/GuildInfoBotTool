@@ -36,17 +36,12 @@ async def code(request):
     # also I need to make sure I have the user id.
 
     user_id = states[state]
-
     api_endpoint = discord.http.Route.BASE
-
     client_id = os.environ["client_id"]
     client_secret = os.environ["client_secret"]
-
     session = request.app["aiohttp_session"]
     # could be done better honestly
-
-    redirect_uri = request.rel_url
-    print(redirect_uri)
+    redirect_uri = os.environ["redirect_url"]
 
     data = {
         "grant_type": "authorization_code",
