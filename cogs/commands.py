@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import tempfile
 import random
 import json
 from typing import TYPE_CHECKING
