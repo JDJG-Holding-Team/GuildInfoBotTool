@@ -46,7 +46,7 @@ async def code(request):
     # could be done better honestly
 
     redirect_uri = request.rel_url
-    print(request.url)
+    print(redirect_uri)
 
     data = {
         "grant_type": "authorization_code",
