@@ -5,6 +5,7 @@ import random
 import json
 from typing import TYPE_CHECKING
 
+import asqlite
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -71,7 +72,22 @@ class Commands(commands.Cog):
         json_response = io.StringIO(json_string)
         file = discord.File(json_response, filename="user_data.json")
 
-        await interaction.response.send_message("Here's your data(stats will be around in the future)", file=file, ephemeral=True)
+        with tempfile.NamedTemporaryFile(mode="w", delete_on_close=True) as f:
+            # delete on close may be already used
+            # is delete needed?
+            # appraently it's also autodeleted
+            # https://stackoverflow.com/questions/11043372/how-to-use-tempfile-namedtemporaryfile
+            # https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+
+            # does f even work with it?
+
+            async with asqlite.connect(f) as conn:
+                async with conn.cursor() as cursor:
+                    print(conn)
+
+                # I am unsure about what tables in execute right now.
+
+        await interaction.response.send_message("Here's your data(stats will be around in the future)", files=[file, sqlite_file], ephemeral=True)
 
     @app_commands.command(description="Clears data", name="clear-data")
     async def clear_data(self, interaction: discord.Interaction):
