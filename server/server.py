@@ -1,3 +1,4 @@
+import asyncio
 import os
 import random
 import secrets
@@ -6,8 +7,6 @@ from threading import Thread
 import discord
 from aiohttp import web
 import aiohttp
-
-import asyncio
 
 routes = web.RouteTableDef()
 
