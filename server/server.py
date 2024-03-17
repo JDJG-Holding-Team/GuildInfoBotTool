@@ -164,7 +164,7 @@ async def generate_url(response):
         case RedirectEnum.regular:
             redirect_url = os.environ["redirect_url"]
 
-        case RedirectEnum.wesbsite:
+        case RedirectEnum.website:
             redirect_url = os.environ["website_redirect_url"]
 
         case RedirectEnum.stats:
