@@ -52,7 +52,7 @@ async def code(request):
     resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret))
 
     if not resp.ok:
-        return web.Response(status=401", text="Grabbing data failed.")
+        return web.Response(status=401, text="Grabbing data failed.")
     
     data_response = await resp.json()
 
@@ -67,14 +67,14 @@ async def code(request):
     resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
 
     if not resp.ok:
-        return web.Response(status=401", text="Grabbing data failed.")
+        return web.Response(status=401, text="Grabbing data failed.")
 
     user_data = await resp.json()
 
     resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
 
     if not resp.ok:
-        return web.Response(status=401", text="Grabbing data failed.")
+        return web.Response(status=401, text="Grabbing data failed.")
 
     app_data = await resp.json()
 
@@ -86,7 +86,7 @@ async def code(request):
     resp = await session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers)
 
     if not resp.ok:
-        return web.Response(status=401", text="Grabbing data failed.")
+        return web.Response(status=401, text="Grabbing data failed.")
 
     guilds = await resp.json()
 
@@ -97,7 +97,7 @@ async def code(request):
         # resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
 
         # if not resp.ok:
-            # return web.Response(status=401", text="Grabbing data failed.")
+            # return web.Response(status=401, text="Grabbing data failed.")
 
         # guild_info = await resp.json()
         # nicknames[guild_id] = guild_info
@@ -113,7 +113,7 @@ async def code(request):
     resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
 
     if not resp.ok:
-        return web.Response(status=401", text="Grabbing data failed.")
+        return web.Response(status=401, text="Grabbing data failed.")
 
     connections = await resp.json()
 
