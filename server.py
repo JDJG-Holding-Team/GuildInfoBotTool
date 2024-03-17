@@ -1,3 +1,4 @@
+import asyncio
 import os
 import random
 import secrets
@@ -5,16 +6,17 @@ from threading import Thread
 
 import discord
 from aiohttp import web
-
-import asyncio
+from discord.http import Route
 
 routes = web.RouteTableDef()
 
 states = {}
 
+
 @routes.get("/")
 async def hello(request):
     return web.Response(text="Welcome Please let the bot direct you to the right spots")
+
 
 @routes.get("/code")
 async def code(request):
@@ -36,7 +38,8 @@ async def code(request):
 
     user_id = states[state]
 
-    api_endpoint = discord.http.Route.BASE
+    api_endpoint = "https://discord.com/api/v10"
+    # maybe grab this from dpy?
 
     client_id = os.environ["client_id"]
     client_secret = os.environ["client_user"]
@@ -46,44 +49,15 @@ async def code(request):
 
     redirect_uri = os.environ["redirect_url"]
 
-    data = {
-        "grant_type": "authorization_code",
-        "code" : _code,
-        "redirect_uri": redirect_uri
-    }
+    data = {"grant_type": "authorization_code", "code": _code, "redirect_uri": redirect_uri}
     resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=(client_id, client_secret))
 
     if not resp.ok:
         return web.Response(status="401", text="Grabbing data failed.")
-    
+
     data_response = await resp.json()
 
     access_token = data_response["access_token"]
-    token_type = data_response["token_type"]
-
-    # make sure we all get all data under ("identify", "guilds", "connections", "guilds.members.read", "connections")
-
-    headers = {}
-
-    user_data = await session.get(f"{api_endpoint}/users/@me", headers=headers)
-    app_data = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
-
-    # https://discord.com/developers/docs/topics/oauth2#get-current-authorization-information
-
-    # indentify?
-    # maybe more data below:
-
-    guild_data = await session.get(f"{api_endpoint}/users/@me/guilds", headers=headers)
-    # with_counts may be useful, guilds
-    # no email is needed right?
-
-    # https://discord.com/developers/docs/resources/user#get-current-user-guild-member
-    # I did put something in for nickname data, tied to guild.members.read.
-
-    connections_data = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
-    # connections
-
-    # are there more things for all the other data?
 
     # request.app["guild_data"][user_id] = data
 
@@ -107,11 +81,11 @@ async def generate_url(response):
     if not client_id.isdigit():
         data = {"error": "Invalid integer for client_id"}
         return web.json_response(data, status=401)
-    
+
     if not user_id.isdigit():
         data = {"error": "Invalid integer for user_id"}
         return web.json_response(data, status=401)
-    
+
     user_id = int(user_id)
     client_id = int(client_id)
 
@@ -120,7 +94,7 @@ async def generate_url(response):
     url = discord.utils.oauth_url(
         client_id,
         redirect_uri=redirect_url,
-        scopes=("identify", "connections", "guilds", "guilds.members.read"),
+        scopes=("identify", "guilds", "connections", "guilds.members.read", "connections"),
         state=state,
     )
 
