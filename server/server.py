@@ -5,6 +5,7 @@ from threading import Thread
 
 import discord
 from aiohttp import web
+import aiohttp
 
 import asyncio
 
