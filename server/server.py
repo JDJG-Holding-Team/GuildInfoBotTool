@@ -52,7 +52,6 @@ async def code(request):
         "redirect_uri": redirect_uri
     }
 
-    
     resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret))
 
     if not resp.ok:
