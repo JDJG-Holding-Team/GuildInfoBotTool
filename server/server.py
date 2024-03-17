@@ -39,7 +39,7 @@ async def code(request):
     api_endpoint = discord.http.Route.BASE
 
     client_id = os.environ["client_id"]
-    client_secret = os.environ["client_user"]
+    client_secret = os.environ["client_secret"]
 
     session = request.app["aiohttp_session"]
     # could be done better honestly
