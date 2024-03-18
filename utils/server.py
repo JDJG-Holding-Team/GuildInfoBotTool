@@ -20,7 +20,9 @@ async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoin
         if not retry_seconds:
             return web.Response(status=401, text="Retry after doesn't exist.")
 
-    return retry_seconds
+        return retry_seconds
+
+    return guild_info
 
 
 async def handle_basic_response(request: web.Request, states: dict, redirect_uri: str):
@@ -105,17 +107,18 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
         if isinstance(guild_info, web.Response):
             return guild_info
 
-        if not isinstance(guild_info, float):
+        if not isinstance(guild_info, float) and not isinstance(guild_info, dict):
             return web.Response(status=401, text="Something went wrong with retrying fetching.")
 
-        retry_seconds = guild_info
-        
-        if retry_seconds:
-            guild_data = {f"error with fetching data with {guild_id}"}
-            # await asyncio.sleep(retry_seconds)
-            # guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
-        # should run only when more than 0 seconds.
-        # I should probaly not use this rn and find a way to be able to grab all without having the server timeout.
+        if isinstance(guild_info, float):
+            retry_seconds = guild_info
+            
+            if retry_seconds:
+                guild_data = {f"error with fetching data with {guild_id}"}
+                # await asyncio.sleep(retry_seconds)
+                # guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
+            # should run only when more than 0 seconds.
+            # I should probaly not use this rn and find a way to be able to grab all without having the server timeout.
         
         nicknames[guild_id] = guild_info
 
