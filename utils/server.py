@@ -107,6 +107,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
         retry_seconds = guild_info
 
+        print(retry_seconds)
         if retry_seconds:
             await asyncio.sleep(retry_seconds)
             guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
