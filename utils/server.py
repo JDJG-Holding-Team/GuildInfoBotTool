@@ -4,6 +4,22 @@ import aiohttp
 import discord
 from aiohttp import web
 
+async def grab_nickname_data(guild, session):
+    # object type for guild may make this easier, to make guild_id to guild.id
+    # guild.id may be better.
+    guild_id = guild["id"]
+    resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
+
+    guild_info = await resp.json()
+
+    if not resp.ok:
+        retry_seconds = guild_info.get("retry_after")
+
+        if not retry_seconds:
+            return web.Response(status=401, text="Grabbing data failed.")
+
+    return retry_seconds
+
 
 async def handle_basic_response(request: web.Request, states: dict, redirect_uri: str):
     _code = request.rel_url.query.get("code")
@@ -80,20 +96,19 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
     nicknames = {}
     for guild in guilds:
-    # object type for guild may make this easier, to make guild_id to guild.id
-        # guild.id may be better.
-        guild_id = guild["id"]
-        resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
+        guild_info = await grab_nickname_data(guild, session)
 
-        guild_info = await resp.json()
+        if isinstance(guild_info, web.Response):
+            return guild_info
 
-        if not resp.ok:
-            print(guild_info)
-            return web.Response(status=401, text="Grabbing data failed.")
+        if not isinstance(guild_info, int):
+            return web.Response(status=401, text="Something went wrong with retrying fetching.")
 
-    nicknames[guild_id] = guild_info
+        retry_seconds = guild_info
+        await asyncio.sleep(retry_seconds)
+        guild_info = await grab_nickname_data(guild, session)
+        nicknames[guild_id] = guild_info
 
-    # with_counts may be useful, guilds
     # no email is needed right?
     # I don't know if people want email stats.
 
