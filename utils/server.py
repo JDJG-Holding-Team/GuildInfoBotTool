@@ -53,8 +53,9 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
         return web.Response(status=401, text="Grabbing data failed.")
 
     user_data = await resp.json()
+    user_data_id = int(user_data.get("id"))
 
-    if user_data.get("id") != user_id:
+    if  user_data_id != user_id:
         return web.Response(status=401, text="Mismatched user_id data. Something fishy is going on here.")
         # could I possibly put a warning in here and then update the state data, idk?
 
