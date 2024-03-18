@@ -55,6 +55,10 @@ async def handle_basic_response(request : web.Request, states : dict, redirect_u
 
     user_data = await resp.json()
 
+    if user_data.get("id") != user_id:
+        return web.Response(status=401, text="Mismatched user_id data. Something fishy is going on here.")
+        # could I possibly put a warning in here and then update the state data, idk?
+
     resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
 
     if not resp.ok:
