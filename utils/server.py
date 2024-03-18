@@ -106,12 +106,13 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
             return web.Response(status=401, text="Something went wrong with retrying fetching.")
 
         retry_seconds = guild_info
-        
+
         if retry_seconds:
             await asyncio.sleep(retry_seconds)
+            guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
         # should run only when more than 0 seconds.
         
-        guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
+        guild_id = guild["id"]
         nicknames[guild_id] = guild_info
 
     # no email is needed right?
