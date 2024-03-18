@@ -103,6 +103,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
             return guild_info
 
         if not isinstance(guild_info, int):
+            print(guild_info)
             return web.Response(status=401, text="Something went wrong with retrying fetching.")
 
         retry_seconds = guild_info
