@@ -98,6 +98,8 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
     nicknames = {}
     for guild in guilds:
+        
+        guild_id = guild["id"]
         guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
 
         if isinstance(guild_info, web.Response):
@@ -109,11 +111,12 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
         retry_seconds = guild_info
         
         if retry_seconds:
-            await asyncio.sleep(retry_seconds)
-            guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
+            guild_data = {f"error with fetching data with {guild_id}"}
+            # await asyncio.sleep(retry_seconds)
+            # guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
         # should run only when more than 0 seconds.
+        # I should probaly not use this rn
         
-        guild_id = guild["id"]
         nicknames[guild_id] = guild_info
 
     # no email is needed right?
