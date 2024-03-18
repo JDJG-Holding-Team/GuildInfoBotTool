@@ -98,7 +98,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
     nicknames = {}
     for guild in guilds:
-        
+
         guild_id = guild["id"]
         guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
 
@@ -115,7 +115,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
             # await asyncio.sleep(retry_seconds)
             # guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
         # should run only when more than 0 seconds.
-        # I should probaly not use this rn
+        # I should probaly not use this rn and find a way to be able to grab all without having the server timeout.
         
         nicknames[guild_id] = guild_info
 
