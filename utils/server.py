@@ -12,6 +12,7 @@ async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoin
 
     guild_info = await resp.json()
 
+    retry_seconds = None
     if not resp.ok:
         retry_seconds = guild_info.get("retry_after")
 
