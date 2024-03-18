@@ -103,11 +103,12 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
             return guild_info
 
         if not isinstance(guild_info, int):
+            print(guild_info)
             return web.Response(status=401, text="Something went wrong with retrying fetching.")
 
         retry_seconds = guild_info
 
-        print(retry_seconds)
+        
         if retry_seconds:
             await asyncio.sleep(retry_seconds)
             guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
