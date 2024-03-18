@@ -11,6 +11,8 @@ import discord
 from aiohttp import web
 import aiohttp
 
+import utils
+
 routes = web.RouteTableDef()
 
 states = {}
@@ -138,8 +140,8 @@ async def code(request):
 @routes.get("/full-data")
 async def full_data(request):
 
-    redirect_uri = ""
-    await handle_basic_response(request, states, redirect_uri)
+    redirect_uri = os.environ["website_redirect_url"]
+    data = await utils.server.handle_basic_response(request, states, redirect_uri)
 
     if isinstance(data, web.Response):
         return data
