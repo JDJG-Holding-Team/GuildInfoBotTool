@@ -4,7 +4,7 @@ import aiohttp
 import discord
 from aiohttp import web
 
-async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoint : str):
+async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoint : str, headers : dict):
     # object type for guild may make this easier, to make guild_id to guild.id
     # guild.id may be better.
     guild_id = guild["id"]
@@ -96,7 +96,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
     nicknames = {}
     for guild in guilds:
-        guild_info = await grab_nickname_data(guild, session, api_endpoint)
+        guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
 
         if isinstance(guild_info, web.Response):
             return guild_info
@@ -106,7 +106,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
         retry_seconds = guild_info
         await asyncio.sleep(retry_seconds)
-        guild_info = await grab_nickname_data(guild, session, api_endpoint)
+        guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
         nicknames[guild_id] = guild_info
 
     # no email is needed right?
