@@ -140,7 +140,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
     complete_data["app"] = app_data
     complete_data["guilds"] = guilds
     complete_data["connections"] = connections
-    # complete_data["nicknames"] = nicknames
-    # nicknames too many requests
+    complete_data["nicknames"] = nicknames
+    # nicknames too many requests, but it will now have error data here.
 
     return complete_data
