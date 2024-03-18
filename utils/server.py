@@ -115,7 +115,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
             
             if retry_seconds:
                 if retry_seconds > 10:
-                    guild_info = {"error" : f"fetching data with {guild_id}"}
+                    guild_info = {"error" : f"fetching data with {guild_id}", "fetch_time" : retry_seconds}
 
                 else:
                     await asyncio.sleep(retry_seconds)
