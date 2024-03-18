@@ -17,7 +17,7 @@ async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoin
         retry_seconds = guild_info.get("retry_after")
 
         if not retry_seconds:
-            return web.Response(status=401, text="Grabbing data failed.")
+            return web.Response(status=401, text="Retry after doesn't exist.")
 
     return retry_seconds
 
