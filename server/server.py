@@ -24,12 +24,14 @@ async def hello(request):
 @routes.get("/code")
 async def code(request):
 
-    user_id = states[state]
     redirect_uri = os.environ["redirect_url"]
     data = await utils.server.handle_basic_response(request, states, redirect_uri)
 
     if isinstance(data, web.Response):
         return data
+
+    user_id = int(data["user"]["id"])
+    # this should work ok.
 
     request.app["guild_data"][user_id] = data
 
