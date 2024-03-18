@@ -114,9 +114,12 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
             retry_seconds = guild_info
             
             if retry_seconds:
-                guild_info = {f"error with fetching data with {guild_id}"}
-                # await asyncio.sleep(retry_seconds)
-                # guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
+                if retry_seconds > 10:
+                    guild_info = {f"error with fetching data with {guild_id}"}
+
+                else:
+                    await asyncio.sleep(retry_seconds)
+                    guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
             # should run only when more than 0 seconds.
             # I should probaly not use this rn and find a way to be able to grab all without having the server timeout.
         
