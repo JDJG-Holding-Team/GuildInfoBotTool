@@ -3,6 +3,7 @@ import discord
 # stuff like BasicButtons for the clear data command in the bot.
 # this should probaly be rewritten and given a timeout behavior but I think it already handles this?
 
+
 class BasicButtons(discord.ui.View):
     def __init__(self, ctx, **kwargs):
         super().__init__(**kwargs)
