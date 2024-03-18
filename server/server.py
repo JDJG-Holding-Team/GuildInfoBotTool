@@ -7,21 +7,22 @@ import random
 import secrets
 from threading import Thread
 
+import aiohttp
 import discord
 from aiohttp import web
-import aiohttp
 
 import utils
-
 from utils import RedirectEnum
 
 routes = web.RouteTableDef()
 
 states = {}
 
+
 @routes.get("/")
 async def hello(request):
     return web.Response(text="Welcome Please let the bot direct you to the right spots")
+
 
 @routes.get("/code")
 async def code(request):
@@ -40,6 +41,7 @@ async def code(request):
     return web.Response(status=200, text="Grabbing guild data so you can use it in command /data")
     # will be json response in a bit or not idk.
 
+
 @routes.get("/full-data")
 async def full_data(request):
 
@@ -56,10 +58,11 @@ async def full_data(request):
 
     # web.FileResponse(path=json_response, status=200, )
     return web.Response(status=200, text="Stats in the future")
-    
+
     # find out how to download the json and also to respond with the stats via html
 
     # will be json response in a bit or not idk.
+
 
 @routes.get("/stats")
 async def stats(request):
@@ -71,10 +74,11 @@ async def stats(request):
         return data
 
     # complete_collections info is all in the server.py file so, may be better if I had an object to handle everything.
-    
+
     # run stat calculations on different stuff and reply with a file version within json or txt too.
 
     return web.Response(status=200, text="Stats in the future")
+
 
 @routes.get("/generate-url")
 async def generate_url(response):
@@ -96,11 +100,11 @@ async def generate_url(response):
     if not client_id.isdigit():
         data = {"error": "Invalid integer for client_id"}
         return web.json_response(data, status=401)
-    
+
     if not user_id.isdigit():
         data = {"error": "Invalid integer for user_id"}
         return web.json_response(data, status=401)
-    
+
     user_id = int(user_id)
     client_id = int(client_id)
     redirect_int = int(redirect_int)

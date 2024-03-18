@@ -1,10 +1,11 @@
-import discord
 import os
-import aiohttp
 
+import aiohttp
+import discord
 from aiohttp import web
 
-async def handle_basic_response(request : web.Request, states : dict, redirect_uri : str):
+
+async def handle_basic_response(request: web.Request, states: dict, redirect_uri: str):
     _code = request.rel_url.query.get("code")
     state = request.rel_url.query.get("state")
 
@@ -27,17 +28,15 @@ async def handle_basic_response(request : web.Request, states : dict, redirect_u
     session = request.app["aiohttp_session"]
     # could be done better honestly
 
-    data = {
-        "grant_type": "authorization_code",
-        "code" : _code,
-        "redirect_uri": redirect_uri
-    }
+    data = {"grant_type": "authorization_code", "code": _code, "redirect_uri": redirect_uri}
 
-    resp = await session.post(f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret))
+    resp = await session.post(
+        f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret)
+    )
 
     if not resp.ok:
         return web.Response(status=401, text="Grabbing data failed.")
-    
+
     data_response = await resp.json()
 
     access_token = data_response["access_token"]
@@ -45,7 +44,7 @@ async def handle_basic_response(request : web.Request, states : dict, redirect_u
 
     # make sure we all get all data under ("identify", "guilds", "connections", "guilds.members.read", "connections")
 
-    headers = {"authorization" : f"{token_type} {access_token}"}
+    headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
 
     resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
@@ -80,16 +79,16 @@ async def handle_basic_response(request : web.Request, states : dict, redirect_u
 
     # nicknames = {}
     # for guild in guilds:
-        # object type for guild may make this easier, to make guild_id to guild.id
-        # guild_id = guild["id"]
-        # resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
+    # object type for guild may make this easier, to make guild_id to guild.id
+    # guild_id = guild["id"]
+    # resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
 
-        # if not resp.ok:
-            # return web.Response(status=401, text="Grabbing data failed.")
+    # if not resp.ok:
+    # return web.Response(status=401, text="Grabbing data failed.")
 
-        # guild_info = await resp.json()
-        # nicknames[guild_id] = guild_info
-        # guild.id may be better.
+    # guild_info = await resp.json()
+    # nicknames[guild_id] = guild_info
+    # guild.id may be better.
 
     # with_counts may be useful, guilds
     # no email is needed right?

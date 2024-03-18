@@ -6,11 +6,11 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
-from cogs import EXTENSIONS
 from discord.ext import commands
 from dotenv import load_dotenv
 
 import server
+from cogs import EXTENSIONS
 
 
 class GuildInfoTool(commands.Bot):
