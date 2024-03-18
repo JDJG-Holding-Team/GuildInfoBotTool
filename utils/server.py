@@ -12,7 +12,7 @@ async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoin
 
     guild_info = await resp.json()
 
-    retry_seconds = 0
+    retry_seconds = 0.0
     if not resp.ok:
         retry_seconds = guild_info.get("retry_after")
 
@@ -102,8 +102,7 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
         if isinstance(guild_info, web.Response):
             return guild_info
 
-        if not isinstance(guild_info, int):
-            print(guild_info, type(guild_info))
+        if not isinstance(guild_info, float):
             return web.Response(status=401, text="Something went wrong with retrying fetching.")
 
         retry_seconds = guild_info
