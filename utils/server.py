@@ -77,18 +77,20 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
 
     guilds = await resp.json()
 
-    # nicknames = {}
-    # for guild in guilds:
+    nicknames = {}
+    for guild in guilds:
     # object type for guild may make this easier, to make guild_id to guild.id
-    # guild_id = guild["id"]
-    # resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
+        # guild.id may be better.
+        guild_id = guild["id"]
+        resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
 
-    # if not resp.ok:
-    # return web.Response(status=401, text="Grabbing data failed.")
+        guild_info = await resp.json()
 
-    # guild_info = await resp.json()
-    # nicknames[guild_id] = guild_info
-    # guild.id may be better.
+        if not resp.ok:
+            print(guild_info)
+            return web.Response(status=401, text="Grabbing data failed.")
+
+    nicknames[guild_id] = guild_info
 
     # with_counts may be useful, guilds
     # no email is needed right?
