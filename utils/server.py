@@ -146,4 +146,6 @@ async def handle_basic_response(request: web.Request, states: dict, redirect_uri
     complete_data["nicknames"] = nicknames
     # nicknames too many requests, but it will now have error data here.
 
+    # still somewhat slow for whatever reason.
+
     return complete_data
