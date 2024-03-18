@@ -1,3 +1,6 @@
+import discord
+import os
+
 from aiohttp import web
 
 async def handle_basic_response(request : web.Request, states : dict, redirect_uri : str):
