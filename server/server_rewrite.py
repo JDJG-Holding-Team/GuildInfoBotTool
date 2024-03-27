@@ -17,7 +17,8 @@ async def main():
 async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
     print(code, state)
 
-    # look to see if this works.
+    if not code or state:
+        return {"error" : "Missing Code or State"}
 
 
 
