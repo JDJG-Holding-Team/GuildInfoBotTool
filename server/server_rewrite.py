@@ -20,6 +20,6 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
     if not code or state:
         return "Missing arguments you(need code and state)"
 
-    # should be utiling it.
+    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
 
 
