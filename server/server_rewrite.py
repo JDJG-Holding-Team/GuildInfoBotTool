@@ -21,6 +21,30 @@ async def main():
 async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
     print(code, state)
 
+    redirect_uri = os.environ["redirect_url"]
+
+    if not code or state:
+        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+
+    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+
+@routes.get("/full-data")
+async def full_data(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
+    print(code, state)
+
+    redirect_uri = os.environ["website_redirect_url"]
+
+    if not code or state:
+        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+
+    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+
+
+@routes.get("/stats")
+async def stats(request):
+
+    redirect_uri = os.environ["stats_redirect_url"]
+
     if not code or state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
@@ -30,7 +54,7 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
 async def generate_url(client_id: typing.Optional[typing.Union[int, str]] = None, user_id : typing.Optional[typing.Union[int, str]] = None, redirect_int: typing.Optional[typing.Union[int, str]] = None):
     
     if not client_id or not user_id:
-        return {"error" : "Missing arguments(client_id or user_id)"}
+        return ORJSONResponse({"error" : "Missing arguments(client_id or user_id)"}, status_code=401)
     
     if isinstance(client_id, str) or isinstance(user_id, str) or isinstance(user_id, str):
         return ORJSONResponse({"error" : "Non int variables being used."}, status_code=401)
