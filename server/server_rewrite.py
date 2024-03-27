@@ -5,7 +5,7 @@ import secrets
 
 
 from fastapi import FastAPI
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, ORJSONResponse
 
 
 app = FastAPI()
@@ -22,18 +22,18 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
     print(code, state)
 
     if not code or state:
-        return "Missing arguments you(need code and state)"
+        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
 
-@routes.get("/generate-url")
+@routes.get("/generate-url", response_class=ORJSONResponse)
 async def generate_url(client_id: typing.Optional[typing.Union[int, str]] = None, user_id : typing.Optional[typing.Union[int, str]] = None, redirect_int: typing.Optional[typing.Union[int, str]] = None):
     
     if not client_id or not user_id:
         return {"error" : "Missing arguments(client_id or user_id)"}
     
     if isinstance(client_id, str) or isinstance(user_id, str) or isinstance(user_id, str):
-        return {"error" : "Non int variables being used."}
+        return ORJSONResponse({"error" : "Non int variables being used."}, status_code=401)
     
     # should all be pythonic
     # should already be int
