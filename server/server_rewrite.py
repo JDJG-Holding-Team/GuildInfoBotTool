@@ -12,6 +12,7 @@ app = FastAPI()
 app.state.states = {}
 # will need to be ran properly through awaitable method or ipc.
 
+
 @app.get("/", response_class=PlainTextResponse)
 async def main():
     return "Welcome Please let the bot direct you to the right spots"
@@ -27,6 +28,7 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+
 
 @routes.get("/full-data")
 async def full_data(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
@@ -50,15 +52,20 @@ async def stats(request):
 
     # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
 
+
 @routes.get("/generate-url", response_class=ORJSONResponse)
-async def generate_url(client_id: typing.Optional[typing.Union[int, str]] = None, user_id : typing.Optional[typing.Union[int, str]] = None, redirect_int: typing.Optional[typing.Union[int, str]] = None):
-    
+async def generate_url(
+    client_id: typing.Optional[typing.Union[int, str]] = None,
+    user_id: typing.Optional[typing.Union[int, str]] = None,
+    redirect_int: typing.Optional[typing.Union[int, str]] = None,
+):
+
     if not client_id or not user_id:
-        return ORJSONResponse({"error" : "Missing arguments(client_id or user_id)"}, status_code=401)
-    
+        return ORJSONResponse({"error": "Missing arguments(client_id or user_id)"}, status_code=401)
+
     if isinstance(client_id, str) or isinstance(user_id, str) or isinstance(user_id, str):
-        return ORJSONResponse({"error" : "Non int variables being used."}, status_code=401)
-    
+        return ORJSONResponse({"error": "Non int variables being used."}, status_code=401)
+
     # should all be pythonic
     # should already be int
 
