@@ -16,6 +16,16 @@ app.state.states = {}
 async def main():
     return "Welcome Please let the bot direct you to the right spots"
 
+
+@app.get("/code", response_class=PlainTextResponse)
+async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
+    print(code, state)
+
+    if not code or state:
+        return "Missing arguments you(need code and state)"
+
+    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+
 @routes.get("/generate-url")
 async def generate_url(client_id: typing.Optional[typing.Union[int, str]] = None, user_id : typing.Optional[typing.Union[int, str]] = None, redirect_int: typing.Optional[typing.Union[int, str]] = None):
     
@@ -55,16 +65,3 @@ async def generate_url(client_id: typing.Optional[typing.Union[int, str]] = None
     )
 
     return {"url": url}
-    
-
-
-@app.get("/code", response_class=PlainTextResponse)
-async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
-    print(code, state)
-
-    if not code or state:
-        return "Missing arguments you(need code and state)"
-
-    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
-
-
