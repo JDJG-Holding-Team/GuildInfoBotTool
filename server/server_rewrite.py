@@ -13,12 +13,12 @@ async def main():
     return "Welcome Please let the bot direct you to the right spots"
 
 
-@app.get("/code")
+@app.get("/code", response_class=PlainTextResponse)
 async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
     print(code, state)
 
     if not code or state:
-        return {"error" : "Missing Code or State"}
+        return "Missing arguments you(need code and state)"
 
 
 
