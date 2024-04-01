@@ -27,7 +27,7 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
     if not code or state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
-    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one. 
 
 
 @routes.get("/full-data")
