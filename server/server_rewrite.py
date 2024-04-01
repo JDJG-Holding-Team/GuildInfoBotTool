@@ -6,6 +6,7 @@ import secrets
 
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse, ORJSONResponse
+import uvicorn
 
 
 app = FastAPI()
@@ -96,3 +97,24 @@ async def generate_url(
     )
 
     return {"url": url}
+
+
+uvicorn.run("server.server_rewrite:app", port=3000, log_level="debug")
+# switch to server.server:app when done.
+# use async version too.
+
+"""
+import asyncio
+import uvicorn
+
+async def app(scope, receive, send):
+    ...
+
+async def main():
+    config = uvicorn.Config("main:app", port=5000, log_level="info")
+    server = uvicorn.Server(config)
+    await server.serve()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+"""
