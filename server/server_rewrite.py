@@ -25,7 +25,7 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
 
     redirect_uri = os.environ["redirect_url"]
 
-    if not code or state:
+    if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one. 
@@ -38,7 +38,7 @@ async def full_data(code: typing.Optional[str] = None, state: typing.Optional[st
 
     redirect_uri = os.environ["website_redirect_url"]
 
-    if not code or state:
+    if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
@@ -49,7 +49,7 @@ async def stats(request):
 
     redirect_uri = os.environ["stats_redirect_url"]
 
-    if not code or state:
+    if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
