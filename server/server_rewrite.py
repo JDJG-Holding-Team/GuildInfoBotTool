@@ -36,10 +36,20 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
     redirect_uri = os.environ["redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
+    
+    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+    # possibly better way to pass app but idk what.
 
-    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one. 
-    # will be using this soon :)
+    if isinstance(data, str):
+        return PlainTextResponse(text=data, status_code=401)
+    
+    user_id = int(data["user"]["id"])
+    # this should work ok.
+
+    app.state.guild_data[user_id] = data
+
+    return PlainTextResponse(status=200, text="Grabbing guild data so you can use it in command /data")
 
 
 @routes.get("/full-data")
@@ -49,9 +59,25 @@ async def full_data(code: typing.Optional[str] = None, state: typing.Optional[st
     redirect_uri = os.environ["website_redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
 
-    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+
+    if isinstance(data, str):
+        return PlainTextResponse(text=data, status_code=401)
+    
+    json_string = json.dumps(data, indent=4)
+    json_response = io.StringIO(json_string)
+
+    # also add support for the asqlite version in the future too.
+
+    # web.FileResponse(path=json_response, status=200, )
+
+    # find out how to download the json and also to respond with the stats via html
+
+    # will be json response in a bit or not idk.
+
+    return PlainTextResponse(status=200, text="Stats in the future")
 
 
 @routes.get("/stats")
@@ -60,9 +86,19 @@ async def stats(request):
     redirect_uri = os.environ["stats_redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
 
-    # should be utiling it soon with server_rewrite once all is cleaned up server.py will be deleted and will use the new one.
+    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+
+    if isinstance(data, str):
+        return PlainTextResponse(text=data, status_code=401)
+    
+    return PlainTextResponse(status=200, text="Stats in the future")
+
+    # complete_collections info is all in the server.py file so, may be better if I had an object to handle everything.
+
+    # run stat calculations on different stuff and reply with a file version within json or txt too.
+    # although stats should report name information I do not remeber what this file says.
 
 
 @routes.get("/generate-url", response_class=ORJSONResponse)
