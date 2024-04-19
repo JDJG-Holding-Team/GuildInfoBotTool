@@ -14,8 +14,7 @@ from utils import RedirectEnum
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with aiohttp.ClientSession() as session:
-        app.state.session = session
+    async with aiohttp.ClientSession() as app.state.session:
         app.state.states = {}
         # just easier to create the stats does not need to be awaited.
         yield # probaly closes when it is done.
