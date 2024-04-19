@@ -28,9 +28,12 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
+        # make sure to replace the code to call the server.py file and then replace the server_rewrite to server.
         app = server.app
         app["guild_data"] = self.guild_data
+        # this will need to be tied to the app's state for the fastapi rewrite.
         app["aiohttp_session"] = self.session
+        # remeber to remove this aiohttp session when you move it to fastapi
         self.runner = aiohttp.web.AppRunner(app)
         await self.runner.setup()
         self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=3000)

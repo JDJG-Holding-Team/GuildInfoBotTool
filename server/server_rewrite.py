@@ -1,16 +1,25 @@
+from contextlib import asynccontextmanager
 import io
 import json
 import os
 import secrets
 
-
+import aiohttp
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse, ORJSONResponse
 import uvicorn
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with aiohttp.ClientSession() as session:
+        app.state.session = session
+        app.state.states = {}
+        # just easier to create the stats does not need to be awaited.
+    yield # probaly closes when it is done.
+   
+    print("clean aiohttp session")
 
-app = FastAPI()
-app.state.states = {}
+app = FastAPI(lifespan=lifespan)
 # will need to be ran properly through awaitable method or ipc.
 
 
