@@ -102,7 +102,7 @@ async def stats():
     # although stats should report name information I do not remeber what this file says.
 
 
-@routes.get("/generate-url", response_class=ORJSONResponse)
+@app.get("/generate-url", response_class=ORJSONResponse)
 async def generate_url(
     client_id: typing.Optional[typing.Union[int, str]] = None,
     user_id: typing.Optional[typing.Union[int, str]] = None,
