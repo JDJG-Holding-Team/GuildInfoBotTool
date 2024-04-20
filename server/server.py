@@ -7,7 +7,6 @@ import secrets
 import aiohttp
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse, ORJSONResponse
-import uvicorn
 
 import utils
 from utils import RedirectEnum
