@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import uvicorn
 
 from cogs import EXTENSIONS
+from server import app # only solution I could get for importing app
 
 
 class GuildInfoTool(commands.Bot):
@@ -30,7 +31,6 @@ class GuildInfoTool(commands.Bot):
        
         config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
         server = uvicorn.Server(config)
-        app = server.app
         app.state.guild_data = self.guild_data
         self.server = server
         await server.serve()
