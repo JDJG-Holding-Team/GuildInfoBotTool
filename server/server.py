@@ -1,25 +1,27 @@
-from contextlib import asynccontextmanager
 import io
 import json
 import os
 import secrets
 import typing
+from contextlib import asynccontextmanager
 
 import aiohttp
 import asqlite
 from fastapi import FastAPI
-from fastapi.responses import PlainTextResponse, ORJSONResponse
+from fastapi.responses import ORJSONResponse, PlainTextResponse
 
 import utils
 from utils import RedirectEnum
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with aiohttp.ClientSession() as app.state.session:
         app.state.states = {}
         # just easier to create the stats does not need to be awaited.
-        yield # probaly closes when it is done.
+        yield  # probaly closes when it is done.
         print("clean aiohttp session")
+
 
 app = FastAPI(lifespan=lifespan)
 # will need to be ran properly through awaitable method or ipc.
@@ -38,13 +40,13 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
 
     if not code or not state:
         return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
-    
+
     data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
     # possibly better way to pass app but idk what.
 
     if isinstance(data, str):
         return PlainTextResponse(text=data, status_code=401)
-    
+
     user_id = int(data["user"]["id"])
     # this should work ok.
 
@@ -66,7 +68,7 @@ async def full_data(code: typing.Optional[str] = None, state: typing.Optional[st
 
     if isinstance(data, str):
         return PlainTextResponse(text=data, status_code=401)
-    
+
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
 
@@ -93,7 +95,7 @@ async def stats():
 
     if isinstance(data, str):
         return PlainTextResponse(text=data, status_code=401)
-    
+
     return PlainTextResponse(status=200, text="Stats in the future")
 
     # complete_collections info is all in the server.py file so, may be better if I had an object to handle everything.
@@ -145,4 +147,3 @@ async def generate_url(
     )
 
     return {"url": url}
-

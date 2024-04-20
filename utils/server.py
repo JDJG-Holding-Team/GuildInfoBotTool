@@ -2,11 +2,12 @@ import asyncio
 import os
 
 import aiohttp
-from fastapi import FastAPI
 import discord
 from aiohttp import web
+from fastapi import FastAPI
 
-async def grab_nickname_data(guild, session : aiohttp.ClientSession, api_endpoint : str, headers : dict):
+
+async def grab_nickname_data(guild, session: aiohttp.ClientSession, api_endpoint: str, headers: dict):
     # object type for guild may make this easier, to make guild_id to guild.id
     # guild.id may be better.
     guild_id = guild["id"]
@@ -41,18 +42,24 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     client_secret = os.environ["client_secret"]
     session = app.state.session
 
-    # this is basically the same way as long 
+    # this is basically the same way as long
 
-    data = {"grant_type": "authorization_code", "code": _code, "redirect_uri": redirect_uri}
-    # needs cleaning up 
-    
+    data = {
+        "grant_type": "authorization_code",
+        "code": _code,
+        "redirect_uri": redirect_uri,
+    }
+    # needs cleaning up
+
     resp = await session.post(
-        f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret)
+        f"{api_endpoint}/oauth2/token",
+        data=data,
+        auth=aiohttp.BasicAuth(client_id, client_secret),
     )
-    
+
     if not resp.ok:
         return "Grabbing data failed."
-    
+
     data_response = await resp.json()
     access_token = data_response["access_token"]
     token_type = data_response["token_type"]
@@ -65,12 +72,12 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
     if not resp.ok:
         return "Grabbing data failed."
-    
+
     user_data = await resp.json()
     user_data_id = int(user_data.get("id"))
     # I hate grabbing the data like this.
 
-    if  user_data_id != user_id:
+    if user_data_id != user_id:
         return "Mismatched user_id data. Something fishy is going on here."
         # could I possibly put a warning in here and then update the state data, idk?
 
@@ -108,22 +115,25 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
         if isinstance(guild_info, float):
             retry_seconds = guild_info
-            
+
             if retry_seconds:
                 if retry_seconds > 10:
-                    guild_info = {"error" : f"fetching data with {guild_id}", "fetch_time" : retry_seconds}
+                    guild_info = {
+                        "error": f"fetching data with {guild_id}",
+                        "fetch_time": retry_seconds,
+                    }
 
                 else:
                     await asyncio.sleep(retry_seconds)
                     # I should break out of it
 
                     if retry_seconds > 30:
-                        break # break out of loop
-                    
+                        break  # break out of loop
+
                     guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
             # should run only when more than 0 seconds.
             # I should probaly not use this rn and find a way to be able to grab all without having the server timeout.
-        
+
         nicknames[guild_id] = guild_info
 
     # https://discord.com/developers/docs/resources/user#get-current-user-guild-member
@@ -139,12 +149,14 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     # connections
     # are there more things for all the other data?
 
-    complete_data = {"user" : user_data,
-                    "app" : app_data,
-                    "guilds" : guilds,
-                    "connections" : connections,
-                    "nicknames": nicknames}
-    
+    complete_data = {
+        "user": user_data,
+        "app": app_data,
+        "guilds": guilds,
+        "connections": connections,
+        "nicknames": nicknames,
+    }
+
     """
     complete_data = {}
     complete_data["user"] = user_data

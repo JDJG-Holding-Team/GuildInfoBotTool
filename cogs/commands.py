@@ -30,7 +30,11 @@ class Commands(commands.Cog):
     @app_commands.command(description="Setups up oauth", name="setup")
     async def _setup(self, interaction: discord.Interaction):
 
-        params = {"client_id": self.bot.user.id, "user_id": interaction.user.id, "redirect_int": 0}
+        params = {
+            "client_id": self.bot.user.id,
+            "user_id": interaction.user.id,
+            "redirect_int": 0,
+        }
         url = URL("http://localhost:3000/generate-url")
         full_url = url.with_query(params)
 
@@ -45,7 +49,9 @@ class Commands(commands.Cog):
         view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message(
-            "Please Click on the button url to authorize oauth", view=view, ephemeral=True
+            "Please Click on the button url to authorize oauth",
+            view=view,
+            ephemeral=True,
         )
 
     @app_commands.command(description="Sends guild data empherally", name="data")
@@ -71,7 +77,8 @@ class Commands(commands.Cog):
             # make a webhook to send this in the info with a ping and also link to the line in the source code ie jdbot source may be helpful for this.
 
             return await interaction.response.send_message(
-                "Someone you got the incorrect data assigned to the wrong person", ephemeral=True
+                "Someone you got the incorrect data assigned to the wrong person",
+                ephemeral=True,
             )
 
         json_string = json.dumps(data, indent=4)
@@ -100,7 +107,9 @@ class Commands(commands.Cog):
             files = [file, sqlite_file]
 
         await interaction.response.send_message(
-            "Here's your data(stats will be around in the future)", files=files, ephemeral=True
+            "Here's your data(stats will be around in the future)",
+            files=files,
+            ephemeral=True,
         )
 
     @app_commands.command(description="Clears data", name="clear-data")
@@ -116,7 +125,11 @@ class Commands(commands.Cog):
     @app_commands.command(description="Setups up oauth but sends data only to the site", name="site-setup")
     async def site_setup(self, interaction: discord.Interaction):
 
-        params = {"client_id": self.bot.user.id, "user_id": interaction.user.id, "redirect_int": 1}
+        params = {
+            "client_id": self.bot.user.id,
+            "user_id": interaction.user.id,
+            "redirect_int": 1,
+        }
         url = URL("http://localhost:3000/generate-url")
         full_url = url.with_query(params)
 
@@ -131,13 +144,22 @@ class Commands(commands.Cog):
         view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message(
-            "Please Click on the button url to authorize oauth", view=view, ephemeral=True
+            "Please Click on the button url to authorize oauth",
+            view=view,
+            ephemeral=True,
         )
 
-    @app_commands.command(description="Setups up oauth but sends stats to the site only", name="stats-setup")
+    @app_commands.command(
+        description="Setups up oauth but sends stats to the site only",
+        name="stats-setup",
+    )
     async def stats_setup(self, interaction: discord.Interaction):
 
-        params = {"client_id": self.bot.user.id, "user_id": interaction.user.id, "redirect_int": 2}
+        params = {
+            "client_id": self.bot.user.id,
+            "user_id": interaction.user.id,
+            "redirect_int": 2,
+        }
         url = URL("http://localhost:3000/generate-url")
         full_url = url.with_query(params)
 
@@ -152,7 +174,9 @@ class Commands(commands.Cog):
         view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message(
-            "Please Click on the button url to authorize oauth", view=view, ephemeral=True
+            "Please Click on the button url to authorize oauth",
+            view=view,
+            ephemeral=True,
         )
 
     @app_commands.command(description="sends link to bot's source code", name="source")

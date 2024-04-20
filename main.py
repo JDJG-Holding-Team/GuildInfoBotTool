@@ -5,12 +5,12 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
+import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
-import uvicorn
 
 from cogs import EXTENSIONS
-from server import app # only solution I could get for importing app
+from server import app  # only solution I could get for importing app
 
 
 class GuildInfoTool(commands.Bot):
@@ -28,7 +28,7 @@ class GuildInfoTool(commands.Bot):
                 traceback.print_exc()
 
         self.session = aiohttp.ClientSession()
-       
+
         config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
         server = uvicorn.Server(config)
         app.state.guild_data = self.guild_data
