@@ -8,7 +8,6 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import server
 from cogs import EXTENSIONS
 
 
@@ -27,22 +26,18 @@ class GuildInfoTool(commands.Bot):
                 traceback.print_exc()
 
         self.session = aiohttp.ClientSession()
-
-        # make sure to replace the code to call the server.py file and then replace the server_rewrite to server.
+       
+        config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
+        server = uvicorn.Server(config)
         app = server.app
-        app["guild_data"] = self.guild_data
-        # this will need to be tied to the app's state for the fastapi rewrite.
-        app["aiohttp_session"] = self.session
-        # remeber to remove this aiohttp session when you move it to fastapi
-        self.runner = aiohttp.web.AppRunner(app)
-        await self.runner.setup()
-        self.site = aiohttp.web.TCPSite(self.runner, host="localhost", port=3000)
-        await self.site.start()
+        app.state.guild_data = self.guild_data
+        self.server = server
+        await server.serve()
 
     async def close(self) -> None:
         await self.session.close()
-
-        await self.runner.cleanup()
+        await self.server.shutdown()
+        # hopefully this is how to handle this properly.
 
         await super().close()
 
