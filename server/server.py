@@ -53,7 +53,7 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
     return PlainTextResponse(status=200, text="Grabbing guild data so you can use it in command /data")
 
 
-@routes.get("/full-data")
+@app.get("/full-data")
 async def full_data(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
     print(code, state)
 
@@ -81,8 +81,8 @@ async def full_data(code: typing.Optional[str] = None, state: typing.Optional[st
     return PlainTextResponse(status=200, text="Stats in the future")
 
 
-@routes.get("/stats")
-async def stats(request):
+@app.get("/stats")
+async def stats():
 
     redirect_uri = os.environ["stats_redirect_url"]
 
