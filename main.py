@@ -34,6 +34,7 @@ class GuildInfoTool(commands.Bot):
         app.state.guild_data = self.guild_data
         self.server = server
         await server.serve()
+        # do I need to run server.startup() ?
 
     async def close(self) -> None:
         await self.session.close()
