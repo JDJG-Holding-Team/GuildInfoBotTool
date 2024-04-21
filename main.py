@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
-import uvicorn
+# import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -29,17 +29,20 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
-        server = uvicorn.Server(config)
-        app.state.guild_data = self.guild_data
-        self.server = server
-        await server.serve()
+        # config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
+        # server = uvicorn.Server(config)
+        # app.state.guild_data = self.guild_data
+        # self.server = server
+        # await server.serve()
         # do I need to run server.startup() ?
 
     async def close(self) -> None:
         await self.session.close()
-        await self.server.shutdown()
+        # await self.server.shutdown() 
+        # remove when moving away this bootup.
+
         # hopefully this is how to handle this properly.
+        # remove this comment too.
 
         await super().close()
 
