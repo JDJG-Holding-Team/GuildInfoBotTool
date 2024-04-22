@@ -47,7 +47,7 @@ class Commands(commands.Cog):
 
         print(data)
 
-        redirect_url = data.get["url"]
+        redirect_url = data["url"]
 
         view = discord.ui.View()
 
