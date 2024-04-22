@@ -29,20 +29,15 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        # config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
-        # server = uvicorn.Server(config)
-        # app.state.guild_data = self.guild_data
-        # self.server = server
-        # await server.serve()
-        # do I need to run server.startup() ?
+        onfig = uvicorn.Config("server.server:app", port=3000, log_level="debug")
+        server = uvicorn.Server(config)
+        app.state.guild_data = self.guild_data
+        self.server = server
+        self.bot.create_loop(server.serve())
 
     async def close(self) -> None:
         await self.session.close()
-        # await self.server.shutdown() 
-        # remove when moving away this bootup.
-
-        # hopefully this is how to handle this properly.
-        # remove this comment too.
+        await self.server.shutdown()
 
         await super().close()
 
