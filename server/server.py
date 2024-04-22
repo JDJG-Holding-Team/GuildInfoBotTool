@@ -19,7 +19,8 @@ from utils import RedirectEnum
 async def lifespan(app: FastAPI):
     async with aiohttp.ClientSession() as app.state.session:
         app.state.states = {}
-        app.state.guild_data: Dict[int, dict] = {}
+        guild_data: Dict[int, dict] = {}
+        app.state.guild_data = guild_data
         # just easier to create the stats does not need to be awaited.
         yield  # probaly closes when it is done.
         print("clean aiohttp session")
