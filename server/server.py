@@ -2,8 +2,8 @@ import io
 import json
 import os
 import secrets
-from typing import Dict, Optional, Union
 from contextlib import asynccontextmanager
+from typing import Dict, Optional, Union
 
 import aiohttp
 import asqlite
@@ -112,7 +112,7 @@ async def generate_url(
     user_id: Optional[Union[int, str]] = None,
     redirect_int: Optional[Union[int, str]] = None,
 ):
-    
+
     print(type(client_id), type(user_id))
     if not client_id or not user_id:
         return ORJSONResponse({"error": "Missing arguments(client_id or user_id)"}, status_code=401)
