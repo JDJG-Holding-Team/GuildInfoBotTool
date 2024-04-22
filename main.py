@@ -29,7 +29,7 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        onfig = uvicorn.Config("server.server:app", port=3000, log_level="debug")
+        config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
         server = uvicorn.Server(config)
         app.state.guild_data = self.guild_data
         self.server = server
