@@ -2,8 +2,7 @@ import io
 import json
 import os
 import secrets
-import typing
-from typing import Dict
+from typing import Dict, Optional, Union
 from contextlib import asynccontextmanager
 
 import aiohttp
@@ -36,7 +35,7 @@ async def main():
 
 
 @app.get("/code", response_class=PlainTextResponse)
-async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
+async def _code(code: Optional[str] = None, state: Optional[str] = None):
     print(code, state)
 
     redirect_uri = os.environ["redirect_url"]
@@ -59,7 +58,7 @@ async def _code(code: typing.Optional[str] = None, state: typing.Optional[str] =
 
 
 @app.get("/full-data")
-async def full_data(code: typing.Optional[str] = None, state: typing.Optional[str] = None):
+async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     print(code, state)
 
     redirect_uri = os.environ["website_redirect_url"]
@@ -109,9 +108,9 @@ async def stats():
 
 @app.get("/generate-url", response_class=ORJSONResponse)
 async def generate_url(
-    client_id: typing.Optional[typing.Union[int, str]] = None,
-    user_id: typing.Optional[typing.Union[int, str]] = None,
-    redirect_int: typing.Optional[typing.Union[int, str]] = None,
+    client_id: Optional[Union[int, str]] = None,
+    user_id: Optional[Union[int, str]] = None,
+    redirect_int: Optional[Union[int, str]] = None,
 ):
     
     print(type(client_id), type(user_id))
