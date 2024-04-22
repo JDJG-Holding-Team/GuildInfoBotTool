@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
-# import uvicorn
+import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
 
