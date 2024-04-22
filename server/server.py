@@ -108,22 +108,10 @@ async def stats():
 
 @app.get("/generate-url", response_class=ORJSONResponse)
 async def generate_url(
-    client_id: Optional[Union[int, str]] = None,
-    user_id: Optional[Union[int, str]] = None,
-    redirect_int: Optional[Union[int, str]] = None,
+    client_id: int,
+    user_id: int,
+    redirect_int: int,
 ):
-
-    print(type(client_id), type(user_id))
-    if not client_id or not user_id:
-        return ORJSONResponse({"error": "Missing arguments(client_id or user_id)"}, status_code=401)
-
-    if isinstance(client_id, str) or isinstance(user_id, str) or isinstance(user_id, str):
-        return ORJSONResponse({"error": "Non int variables being used."}, status_code=401)
-
-    # should all be pythonic
-    # should already be int
-
-    # pass something to the .stats variable somehow.
 
     state = secrets.token_urlsafe(32)
     app.state.states[state] = user_id
