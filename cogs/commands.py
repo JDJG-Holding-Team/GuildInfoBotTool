@@ -205,6 +205,23 @@ class Commands(commands.Cog):
             "Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view
         )
 
+    @app_commands.command(description="Gives the owner's discord information", name="owner")
+    async def _owner(self, interaction: discord.Interaction):
+
+        info = await self.bot.application_info()
+        owner_id = info.team.owner_id if info.team else info.owner.id
+        owner = self.bot.get_user(owner_id)
+
+        if not owner:
+            try:
+                owner = await self.bot.fetch_user(user_id)
+
+            except discord.errors.NotFound:
+                return await interaction.response.send_message("Owner not found", ephemeral=True)
+
+        await interaction.response.send_message(f"Let {owner} know that there is a problem", ephemeral=True)
+
+
 
 async def setup(bot: GuildInfoTool):
     await bot.add_cog(Commands(bot))
