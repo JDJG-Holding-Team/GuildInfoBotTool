@@ -3,6 +3,7 @@ import json
 import os
 import secrets
 import typing
+from typing import Dict
 from contextlib import asynccontextmanager
 
 import aiohttp
@@ -18,7 +19,7 @@ from utils import RedirectEnum
 async def lifespan(app: FastAPI):
     async with aiohttp.ClientSession() as app.state.session:
         app.state.states = {}
-        app.state.guild_data = typing.Dict[int, dict] = {}
+        app.state.guild_data = Dict[int, dict] = {}
         # just easier to create the stats does not need to be awaited.
         yield  # probaly closes when it is done.
         print("clean aiohttp session")
