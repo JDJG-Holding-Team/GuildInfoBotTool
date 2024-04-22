@@ -55,7 +55,7 @@ class Commands(commands.Cog):
         )
 
     @app_commands.command(description="Sends guild data empherally", name="data")
-    async def data(self, interaction: discord.Interaction):
+    async def _data(self, interaction: discord.Interaction):
 
         if not self.bot.guild_data.get(interaction.user.id):
             return await interaction.response.send_message(
