@@ -114,7 +114,7 @@ async def generate_url(
     redirect_int: typing.Optional[typing.Union[int, str]] = None,
 ):
     
-    print(type(client_id, type(user_id))
+    print(type(client_id), type(user_id))
     if not client_id or not user_id:
         return ORJSONResponse({"error": "Missing arguments(client_id or user_id)"}, status_code=401)
 
