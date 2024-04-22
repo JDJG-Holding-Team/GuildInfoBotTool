@@ -33,7 +33,7 @@ class GuildInfoTool(commands.Bot):
         server = uvicorn.Server(config)
         app.state.guild_data = self.guild_data
         self.server = server
-        self.bot.create_loop(server.serve())
+        self.loop.create_task(server.serve())
 
     async def close(self) -> None:
         await self.session.close()
