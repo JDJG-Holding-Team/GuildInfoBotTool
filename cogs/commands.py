@@ -45,8 +45,6 @@ class Commands(commands.Cog):
         if not resp.ok:
             return await interaction.response.send_message("An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.", ephemeral=True)
 
-        print(data)
-
         redirect_url = data["url"]
 
         view = discord.ui.View()

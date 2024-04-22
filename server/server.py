@@ -87,7 +87,7 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
 
 @app.get("/stats")
-async def stats():
+async def stats(code: Optional[str] = None, state: Optional[str] = None):
 
     redirect_uri = os.environ["stats_redirect_url"]
 
