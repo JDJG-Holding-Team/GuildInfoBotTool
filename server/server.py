@@ -101,6 +101,8 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     # will be json response in a bit or not idk.
 
     return PlainTextResponse("Stats in the future")
+    # html responses with download html attribute
+    # le pain.
 
 
 @app.get("/stats")
