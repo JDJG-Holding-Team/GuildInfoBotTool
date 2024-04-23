@@ -104,8 +104,10 @@ class Commands(commands.Cog):
 
                 # I am unsure about what tables in execute right now.
 
+            #unsure how to handle the json response right now will ask dpy for help for that.
+
             sqlite_file = discord.File(f.name, filename="data.db")
-            # direct f will not it may need some fp I am unsure how to get it to work.
+            # needs to use f.name for the location of the file.
 
             files = [file, sqlite_file]
 

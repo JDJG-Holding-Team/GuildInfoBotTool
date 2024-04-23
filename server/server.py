@@ -4,6 +4,7 @@ import os
 import secrets
 from contextlib import asynccontextmanager
 from typing import Dict, Optional, Union
+import tempfile
 
 import aiohttp
 import asqlite
@@ -77,7 +78,23 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
     # also add support for the asqlite version in the future too.
 
-    # web.FileResponse(path=json_response, status=200, )
+    with tempfile.NamedTemporaryFile(mode="w") as f:
+        # delete on close may be already used
+        # delete is necessary possibly but idk, I just know delete_on_close=True isn't in python 3.11
+        # is delete needed?
+        # appraently it's also autodeleted
+        # https://stackoverflow.com/questions/11043372/how-to-use-tempfile-namedtemporaryfile
+        # https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+
+        # does f even work with it?
+
+        async with asqlite.connect(f.name) as conn:
+            async with conn.cursor() as cursor:
+                print(conn)
+
+        #unsure how to handle the json response right now will ask dpy for help for that.
+
+    # file support
 
     # find out how to download the json and also to respond with the stats via html
 
