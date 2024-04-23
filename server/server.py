@@ -43,20 +43,20 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     redirect_uri = os.environ["redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
     # possibly better way to pass app but idk what.
 
     if isinstance(data, str):
-        return PlainTextResponse(text=data, status_code=401)
+        return PlainTextResponse(data, status_code=401)
 
     user_id = int(data["user"]["id"])
     # this should work ok.
 
     app.state.guild_data[user_id] = data
 
-    return PlainTextResponse(status=200, text="Grabbing guild data so you can use it in command /data")
+    return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 
 
 @app.get("/full-data")
@@ -66,12 +66,12 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     redirect_uri = os.environ["website_redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
 
     if isinstance(data, str):
-        return PlainTextResponse(text=data, status_code=401)
+        return PlainTextResponse(data, status_code=401)
 
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
@@ -100,7 +100,7 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
     # will be json response in a bit or not idk.
 
-    return PlainTextResponse(status=200, text="Stats in the future")
+    return PlainTextResponse("Stats in the future")
 
 
 @app.get("/stats")
@@ -109,14 +109,14 @@ async def stats(code: Optional[str] = None, state: Optional[str] = None):
     redirect_uri = os.environ["stats_redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse(text="Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
     data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
 
     if isinstance(data, str):
-        return PlainTextResponse(text=data, status_code=401)
+        return PlainTextResponse(data, status_code=401)
 
-    return PlainTextResponse(status=200, text="Stats in the future")
+    return PlainTextResponse("Stats in the future")
 
     # complete_collections info is all in the server.py file so, may be better if I had an object to handle everything.
 
