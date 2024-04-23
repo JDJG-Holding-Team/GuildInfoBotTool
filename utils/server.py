@@ -46,7 +46,7 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
     data = {
         "grant_type": "authorization_code",
-        "code": _code,
+        "code": code,
         "redirect_uri": redirect_uri,
     }
     # needs cleaning up
