@@ -2,9 +2,9 @@ import io
 import json
 import os
 import secrets
+import tempfile
 from contextlib import asynccontextmanager
 from typing import Dict, Optional, Union
-import tempfile
 
 import aiohttp
 import asqlite
@@ -92,7 +92,7 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
             async with conn.cursor() as cursor:
                 print(conn)
 
-        #unsure how to handle the json response right now will ask dpy for help for that.
+        # unsure how to handle the json response right now will ask dpy for help for that.
 
     # file support
 

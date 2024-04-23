@@ -43,7 +43,10 @@ class Commands(commands.Cog):
         data = await resp.json()
 
         if not resp.ok:
-            return await interaction.response.send_message("An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.", ephemeral=True)
+            return await interaction.response.send_message(
+                "An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.",
+                ephemeral=True,
+            )
 
         redirect_url = data["url"]
 
@@ -104,7 +107,7 @@ class Commands(commands.Cog):
 
                 # I am unsure about what tables in execute right now.
 
-            #unsure how to handle the json response right now will ask dpy for help for that.
+            # unsure how to handle the json response right now will ask dpy for help for that.
 
             sqlite_file = discord.File(f.name, filename="data.db")
             # needs to use f.name for the location of the file.
@@ -143,7 +146,10 @@ class Commands(commands.Cog):
         data = await resp.json()
 
         if not resp.ok:
-            return await interaction.response.send_message("An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.", ephemeral=True)
+            return await interaction.response.send_message(
+                "An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.",
+                ephemeral=True,
+            )
 
         redirect_url = data["url"]
 
@@ -176,7 +182,10 @@ class Commands(commands.Cog):
         data = await resp.json()
 
         if not resp.ok:
-            return await interaction.response.send_message("An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.", ephemeral=True)
+            return await interaction.response.send_message(
+                "An error Occured you'll need to run this again later. Dm the owner in the owner command to let them know.",
+                ephemeral=True,
+            )
 
         redirect_url = data["url"]
 
@@ -220,7 +229,6 @@ class Commands(commands.Cog):
                 return await interaction.response.send_message("Owner not found", ephemeral=True)
 
         await interaction.response.send_message(f"Let {owner} know that there is a problem", ephemeral=True)
-
 
 
 async def setup(bot: GuildInfoTool):
