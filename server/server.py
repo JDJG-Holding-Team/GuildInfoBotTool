@@ -104,6 +104,15 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     # html responses with download html attribute
     # le pain.
 
+    """
+    <pre>
+    { "nice": "stats" }
+    </pre>
+    <a href="download_link.json" download>Download as JSON</a>
+    <a href="download_link.sqlite" download>Download as SQLite</a>
+    """
+    # suggested solution from python.
+
 
 @app.get("/stats")
 async def stats(code: Optional[str] = None, state: Optional[str] = None):

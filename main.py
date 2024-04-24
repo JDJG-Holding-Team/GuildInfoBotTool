@@ -10,7 +10,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from cogs import EXTENSIONS
-from server import app  # only solution I could get for importing app
+# from server import app  # only solution I could get for importing app. Likely won't work to pass data.
 
 
 class GuildInfoTool(commands.Bot):
@@ -29,15 +29,15 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
-        server = uvicorn.Server(config)
-        app.state.guild_data = self.guild_data
-        self.server = server
-        self.loop.create_task(server.serve())
+        # config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
+        # server = uvicorn.Server(config)
+        # app.state.guild_data = self.guild_data
+        # self.server = server
+        # self.loop.create_task(server.serve())
 
     async def close(self) -> None:
         await self.session.close()
-        await self.server.shutdown()
+        # await self.server.shutdown()
 
         await super().close()
 
