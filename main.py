@@ -10,6 +10,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from cogs import EXTENSIONS
+
 # from server import app  # only solution I could get for importing app. Likely won't work to pass data.
 
 
