@@ -172,11 +172,11 @@ async def generate_url(
     return {"url": url}
 
 
-
 async def main():
     config = uvicorn.Config("server:app", port=3000, log_level="debug")
     server = uvicorn.Server(config)
     await server.serve()
+
 
 asyncio.run(main())
 # may also run in the command line idk yet
