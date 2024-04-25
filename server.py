@@ -10,6 +10,7 @@ from typing import Dict, Optional, Union
 import aiohttp
 import asqlite
 import discord
+from dotenv import load_dotenv
 import zmq
 import uvicorn
 from fastapi import FastAPI
@@ -177,6 +178,10 @@ async def generate_url(
 
     return {"url": url}
 
+if not os.getenv("redirect_url") or not os.getenv("website_redirect_url") or not os.getenv("stats_redirect_url"):
+    load_dotenv()
+    # only gunatrees data is loaded properly
+
 
 async def main():
     config = uvicorn.Config("server:app", port=3000, log_level="debug")
@@ -193,7 +198,3 @@ if __name__ == "__main__":
 
 
 # may also run in the command line idk yet
-
-if not os.getenv("redirect_url") or not os.getenv("website_redirect_url") or not os.getenv("stats_redirect_url"):
-    load_dotenv()
-    # only gunatrees data is loaded properly
