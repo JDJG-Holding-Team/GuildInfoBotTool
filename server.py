@@ -70,6 +70,7 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     # this should work ok.
 
     app.state.guild_data[user_id] = data
+    # pass data through rpc somehow.
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 
