@@ -13,5 +13,5 @@ server_url = "localhost:5554"
 bot_url = "localhost:5554"
 
 
-# needs a new file name and change in utils when done
+# needs a new file name and name change in utils(ie import change) when done
 # this may work okay?
