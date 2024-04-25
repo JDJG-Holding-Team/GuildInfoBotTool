@@ -94,18 +94,38 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     json_response = io.StringIO(json_string)
 
     oauth_db = await utils.make_oauth_database(data)
-    # can also be used for bot stuff and for later if this is moved.
 
-    # file support
+    """
+    key_validation = secrets.token_urlsafe(32)
+    user_id = int(data["user"]["id"])
+    # validated earlier
 
-    # find out how to download the json and also to respond with the stats via html
+    record = await app.state.db.fetchrow("SELECT * FROM VALIDATION_KEYS SELECT user_id = $1", user_id)
+    if not record:
+        await app.state.db.execute("INSERT INTO VALIDATION_KEYS VAULUES($1, $2)", user_id, key_validation)
+        # how do I make this encypted
 
-    # will be json response in a bit or not idk.
+        response.set_cookie(key="validation_key", value=key_validation)
 
-    # html responses with download html attribute
-    # le pain.
+    # re-use cookie I suppose?
 
-    # processing takes way too long too.
+    # will need to be added to database as encypted.
+    # prevents people from downloading wrong data.
+    """
+    # not used code right now
+
+    """
+    can also be used for bot stuff and for later if this is moved.
+    file support
+    find out how to download the json and also to respond with the stats via html
+
+    will be json response in a bit or not idk.
+
+    html responses with download html attribute
+    le pain.
+
+    processing takes way too long too.
+    """
 
     html = """
     <pre>
