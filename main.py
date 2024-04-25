@@ -1,4 +1,3 @@
-import asyncio
 import os
 import sys
 import traceback
@@ -6,7 +5,6 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
-import zmq
 import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -31,7 +29,8 @@ class GuildInfoTool(commands.Bot):
         self.session = aiohttp.ClientSession()
 
         # run zmq server here.
-        # # pyzmq localhost server: 5555
+        # import it from utils
+        # pyzmq localhost server: 5555
 
     async def close(self) -> None:
         await self.session.close()

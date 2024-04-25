@@ -1,8 +1,10 @@
+import asyncio
 import enum
 import tempfile
 
 import asqlite
 import discord
+import zmq
 
 
 class RedirectEnum(enum.IntEnum):
@@ -50,3 +52,12 @@ async def make_oauth_database(oauth_data: dict):
 
     return f.name
     # all you need appreantly.
+
+# server methods for zmq bot
+# server should use port (localhost:5554)
+# remove comment from the server file once you start coding this here
+
+# bot methods under this
+# pyzmq localhost server: 5555(remove the port comment from main.py when done.)
+
+# this may work okay?

@@ -10,7 +10,6 @@ import aiohttp
 import asyncpg
 import discord
 from dotenv import load_dotenv
-import zmq
 import uvicorn
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
@@ -27,6 +26,7 @@ class CustomRecordClass(asyncpg.Record):
 
 
 # pyzmq localhost server: 5554
+# load pzmq server from utils
 
 
 @asynccontextmanager
