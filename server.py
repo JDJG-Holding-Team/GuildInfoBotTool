@@ -138,6 +138,7 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     # write actual stats there soon
 
     return HTMLResponse(content=html)
+    # does not work appreantly.
 
 
 @app.get("/stats")
