@@ -80,6 +80,11 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
     guilds = await resp.json()
 
+    resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
+
+    if not resp.ok:
+        return "Grabbing data failed."
+
     connections = await resp.json()
 
     # connections
