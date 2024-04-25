@@ -118,6 +118,8 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     # html responses with download html attribute
     # le pain.
 
+    # processing takes way too long too.
+
     html = """
     <pre>
     { "nice": "stats" }
