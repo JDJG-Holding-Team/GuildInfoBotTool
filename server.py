@@ -12,6 +12,7 @@ import discord
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse, PlainTextResponse
 import uvicorn
+import pyzmq
 
 import utils
 from utils import RedirectEnum
