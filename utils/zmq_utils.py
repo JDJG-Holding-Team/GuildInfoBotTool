@@ -78,3 +78,4 @@ async def server_sender(user_id: int) -> None:
 
 
 # check this: https://github.com/JDJG-Holding-Team/GuildInfoBotTool/commit/4e29e602251f463276b3df9ef3f98bd9536a432e#commitcomment-141348897
+# examples: https://github.com/zeromq/pyzmq/blob/acfcaf111b9253e621d53c6ca306e9225fb4061b/examples/asyncio/coroutines.py
