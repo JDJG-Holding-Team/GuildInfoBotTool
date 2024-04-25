@@ -90,7 +90,7 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
 
     key_validation = secrets.token_urlsafe(32)
 
-    user_id = data["user"]["id"]
+    user_id = int(data["user"]["id"])
     # validated earlier
 
     record = await app.state.db.fetchrow("SELECT * FROM VALIDATION_KEYS SELECT user_id = $1", user_id)
