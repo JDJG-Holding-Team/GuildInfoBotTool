@@ -13,7 +13,7 @@ import discord
 import zmq
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse, PlainTextResponse
+from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 
 import utils
 from utils import RedirectEnum
@@ -103,11 +103,11 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
     # will be json response in a bit or not idk.
 
-    return PlainTextResponse("Stats in the future")
+
     # html responses with download html attribute
     # le pain.
 
-    """
+    html = """
     <pre>
     { "nice": "stats" }
     </pre>
@@ -115,6 +115,8 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     <a href="download_link.sqlite" download>Download as SQLite</a>
     """
     # suggested solution from python.
+
+    return HTMLResponse(content=html)
 
 
 @app.get("/stats")
