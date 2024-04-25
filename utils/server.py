@@ -7,26 +7,6 @@ from aiohttp import web
 from fastapi import FastAPI
 
 
-async def grab_nickname_data(guild, session: aiohttp.ClientSession, api_endpoint: str, headers: dict):
-    # object type for guild may make this easier, to make guild_id to guild.id
-    # guild.id may be better.
-    guild_id = guild["id"]
-    resp = await session.get(f"{api_endpoint}/users/@me/guilds/{guild_id}/member", headers=headers)
-
-    guild_info = await resp.json()
-
-    retry_seconds = 0.0
-    if not resp.ok:
-        retry_seconds = guild_info.get("retry_after")
-
-        if not retry_seconds:
-            return "Retry after doesn't exist."
-
-        return retry_seconds
-
-    return guild_info
-
-
 async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_uri: str):
 
     states = app.state.states
@@ -100,50 +80,6 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
     guilds = await resp.json()
 
-    nicknames = {}
-    # this loop is a terrible way to grab it(It may be better to remove it)
-    for guild in guilds:
-
-        guild_id = guild["id"]
-        guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
-
-        if isinstance(guild_info, web.Response):
-            return guild_info
-
-        if not isinstance(guild_info, float) and not isinstance(guild_info, dict):
-            return "Something went wrong with retrying fetching."
-
-        if isinstance(guild_info, float):
-            retry_seconds = guild_info
-
-            if retry_seconds:
-                if retry_seconds > 10:
-                    guild_info = {
-                        "error": f"fetching data with {guild_id}",
-                        "fetch_time": retry_seconds,
-                    }
-
-                else:
-                    await asyncio.sleep(retry_seconds)
-                    # I should break out of it
-
-                    if retry_seconds > 30:
-                        break  # break out of loop
-
-                    guild_info = await grab_nickname_data(guild, session, api_endpoint, headers)
-            # should run only when more than 0 seconds.
-            # I should probaly not use this rn and find a way to be able to grab all without having the server timeout.
-
-        nicknames[guild_id] = guild_info
-
-    # https://discord.com/developers/docs/resources/user#get-current-user-guild-member
-    # I did put something in for nickname data, tied to guild.members.read.
-
-    resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
-
-    if not resp.ok:
-        return "Grabbing data failed."
-
     connections = await resp.json()
 
     # connections
@@ -154,7 +90,6 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         "app": app_data,
         "guilds": guilds,
         "connections": connections,
-        "nicknames": nicknames,
     }
 
     """
@@ -163,7 +98,6 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     complete_data["app"] = app_data
     complete_data["guilds"] = guilds
     complete_data["connections"] = connections
-    complete_data["nicknames"] = nicknames
     """
     # old code the new one is better.
 

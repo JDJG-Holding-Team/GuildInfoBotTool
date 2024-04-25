@@ -188,6 +188,7 @@ async def generate_url(
         scopes=("identify", "connections", "guilds", "guilds.members.read"),
         state=state,
     )
+    # unused guild.members.read for now will be using it in a different method (if it comes back).
 
     return {"url": url}
 

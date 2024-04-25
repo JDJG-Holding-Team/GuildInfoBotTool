@@ -26,7 +26,6 @@ def stats_builder(data: dict):
 
     connections = data["connections"]
     # unknown for connection stats.
-    nicknames = data["nicknames"]
 
 
 async def make_oauth_database(oauth_data: dict):
