@@ -64,9 +64,13 @@ class Commands(commands.Cog):
     async def _data(self, interaction: discord.Interaction):
 
         if not self.bot.guild_data.get(interaction.user.id):
+            # would check to make sure rpc did not have the data if not then it would ignore it.
+            
+            
             return await interaction.response.send_message(
                 "You have no data stored with this right now", ephemeral=True
             )
+
 
         data = self.bot.guild_data[interaction.user.id]
         oauth_user = data["user"]
