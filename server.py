@@ -28,7 +28,10 @@ class CustomRecordClass(asyncpg.Record):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with aiohttp.ClientSession() as app.state.session, asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db:
+    async with (
+        aiohttp.ClientSession() as app.state.session,
+        asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db,
+    ):
         app.state.db = db
         app.state.states = {}
         guild_data: Dict[int, dict] = {}
@@ -86,7 +89,6 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
 
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
-
 
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
