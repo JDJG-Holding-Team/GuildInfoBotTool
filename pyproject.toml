@@ -1,0 +1,6 @@
+[tool.poetry]
+name = "GuildInfoBotTool"
+version = "0.1.0"
+description = ""
+license = "MIT"
+authors = ["JDJG <jdjgbot@gmail.com>"]
