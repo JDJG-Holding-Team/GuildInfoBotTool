@@ -5,6 +5,10 @@ description = ""
 license = "MIT"
 authors = ["JDJG <jdjgbot@gmail.com>"]
 
+[tool.poetry.dependencies]
+python = ">=3.11.0,<4.0"
+
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.masonry.api"
