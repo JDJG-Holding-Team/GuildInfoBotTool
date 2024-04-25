@@ -169,5 +169,6 @@ async def generate_url(
 
     return {"url": url}
 
+
 uvicorn.run("server:app", port=3000, log_level="debug")
 # may also run in the command line idk yet
