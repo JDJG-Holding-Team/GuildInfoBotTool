@@ -42,6 +42,8 @@ async def bot_receiver():
             msg = await pull.recv_multipart()
             print("recvd", msg)
 
+    # pass bot object in here to have guild_data?
+
 
 async def bot_sender(user_id: int) -> None:
     "sends messages from the bot"
@@ -65,6 +67,8 @@ async def server_receiver():
             print("recving", events)
             msg = await pull.recv_multipart()
             print("recvd", msg)
+
+    # pass in the app state with guild_data here?
 
 
 async def server_sender(user_id: int) -> None:
