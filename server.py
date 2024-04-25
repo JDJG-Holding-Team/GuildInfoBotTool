@@ -26,6 +26,8 @@ class CustomRecordClass(asyncpg.Record):
         return super().__getattr__(name)
 
 
+# pyzmq localhost server: 5554
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with (

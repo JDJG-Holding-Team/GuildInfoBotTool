@@ -31,6 +31,7 @@ class GuildInfoTool(commands.Bot):
         self.session = aiohttp.ClientSession()
 
         # run zmq server here.
+        # # pyzmq localhost server: 5555
 
     async def close(self) -> None:
         await self.session.close()
