@@ -9,6 +9,7 @@ from typing import Dict, Optional, Union
 
 import aiohttp
 import asqlite
+import asyncpg
 import discord
 from dotenv import load_dotenv
 import zmq
@@ -19,6 +20,12 @@ from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 import utils
 from utils import RedirectEnum
 
+class CustomRecordClass(asyncpg.Record):
+    def __getattr__(self, name: str) -> Any:
+        if name in self.keys():
+            return self[name]
+        return super().__getattr__(name)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,9 +33,14 @@ async def lifespan(app: FastAPI):
         app.state.states = {}
         guild_data: Dict[int, dict] = {}
         app.state.guild_data = guild_data
+        
+        async with asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db:
+            app.state.db = db
+
         # just easier to create the stats does not need to be awaited.
         yield  # probaly closes when it is done.
         print("clean aiohttp session")
+
 
 
 app = FastAPI(lifespan=lifespan)
@@ -77,8 +89,18 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
 
     key_validation = secrets.token_urlsafe(32)
 
-    response.set_cookie(key="secret_key", value=key_validation)
+    user_id = data["user"]["id"]
+    #validated earlier
 
+    record = await app.state.db.fetchrow("SELECT * FROM VALIDATION_KEYS SELECT user_id = $1", user_id)
+    if not record:
+        await app.state.db.execute("INSERT INTO VALIDATION_KEYS VAULUES($1, $2)", user_id, key_validation)
+        # how do I make this encypted
+
+        response.set_cookie(key="validation_key", value=key_validation)
+
+    # re-use cookie I suppose?
+    
     # will need to be added to database as encypted.
     # prevents people from downloading wrong data.
 
