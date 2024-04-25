@@ -9,8 +9,8 @@ from typing import Any, Dict, Optional, Union
 import aiohttp
 import asyncpg
 import discord
-from dotenv import load_dotenv
 import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 
