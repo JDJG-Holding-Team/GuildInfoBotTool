@@ -37,8 +37,8 @@ async def lifespan(app: FastAPI):
     ):
         app.state.db = db
         app.state.states = {}
-        guild_data: Dict[int, dict] = {}
-        app.state.guild_data = guild_data
+        oauth_data: Dict[int, dict] = {}
+        app.state.oauth_data = oauth_data
 
         # just easier to create the stats does not need to be awaited.
         yield  # probaly closes when it is done.
@@ -71,7 +71,7 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     user_id = int(data["user"]["id"])
     # this should work ok.
 
-    app.state.guild_data[user_id] = data
+    app.state.oauth_data[user_id] = data
     # pass data through rpc somehow.
     # I have no idea how to use zmq.
 

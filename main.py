@@ -15,7 +15,7 @@ from cogs import EXTENSIONS
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
 
-        self.guild_data: Dict[int, dict] = {}
+        self.oauth_data: Dict[int, dict] = {}
 
         super().__init__(*args, **kwargs)
 
