@@ -193,3 +193,8 @@ if __name__ == "__main__":
 
 
 # may also run in the command line idk yet
+
+if not os.getenv("redirect_url") or not os.getenv("website_redirect_url") or not os.getenv("stats_redirect_url"):
+    load_dotenv()
+    # only gunatrees data is loaded properly
+
