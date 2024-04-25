@@ -15,6 +15,7 @@ fastapi = {extras = ["all"], version = ">=0.110.2"}
 uvicorn = ">=0.29.0"
 pyzmq = ">=26.0.2"
 psutil = ">=5.9.8"
+asyncpg = ">=0.29.0"
 
 [build-system]
 requires = ["poetry-core"]

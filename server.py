@@ -13,7 +13,7 @@ import discord
 from dotenv import load_dotenv
 import zmq
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 
 import utils
@@ -63,7 +63,7 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
 
 @app.get("/full-data")
-async def full_data(code: Optional[str] = None, state: Optional[str] = None):
+async def full_data(response: Response, code: Optional[str] = None, state: Optional[str] = None):
 
     redirect_uri = os.environ["website_redirect_url"]
 
@@ -74,6 +74,13 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
+
+    key_validation = secrets.token_urlsafe(32)
+
+    response.set_cookie(key="secret_key", value=key_validation)
+    
+    # will need to be added to database as encypted.
+    # prevents people from downloading wrong data.
 
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
