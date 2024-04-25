@@ -1,34 +1,57 @@
-from __future__ import annotations
+from __future__ import (
+    annotations,
+)
 
 import io
 import json
-from typing import TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING,
+)
 
 import discord
-from discord import app_commands
-from discord.ext import commands
+from discord import (
+    app_commands,
+)
+from discord.ext import (
+    commands,
+)
 from yarl import URL
 
 import utils
 
 if TYPE_CHECKING:
-    from main import GuildInfoTool
+    from main import (
+        GuildInfoTool,
+    )
 
 
 class Commands(commands.Cog):
     "Commands for the Bot (temp name for now)"
 
-    def __init__(self, bot: GuildInfoTool):
+    def __init__(
+        self,
+        bot: GuildInfoTool,
+    ):
         self.bot: GuildInfoTool = bot
 
-    async def cog_load(self):
+    async def cog_load(
+        self,
+    ):
         print("cog loaded")
 
-    async def cog_unload(self):
+    async def cog_unload(
+        self,
+    ):
         print("cog unloaded")
 
-    @app_commands.command(description="Setups up oauth", name="setup")
-    async def _setup(self, interaction: discord.Interaction):
+    @app_commands.command(
+        description="Setups up oauth",
+        name="setup",
+    )
+    async def _setup(
+        self,
+        interaction: discord.Interaction,
+    ):
 
         params = {
             "client_id": self.bot.user.id,
@@ -52,7 +75,13 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
+        view.add_item(
+            discord.ui.Button(
+                label=f"Setup",
+                url=redirect_url,
+                style=discord.ButtonStyle.link,
+            )
+        )
 
         await interaction.response.send_message(
             "Please Click on the button url to authorize oauth",
@@ -60,14 +89,21 @@ class Commands(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(description="Sends guild data empherally", name="data")
-    async def _data(self, interaction: discord.Interaction):
+    @app_commands.command(
+        description="Sends guild data empherally",
+        name="data",
+    )
+    async def _data(
+        self,
+        interaction: discord.Interaction,
+    ):
 
         if not self.bot.guild_data.get(interaction.user.id):
             # would check to make sure rpc did not have the data if not then it would ignore it.
 
             return await interaction.response.send_message(
-                "You have no data stored with this right now", ephemeral=True
+                "You have no data stored with this right now",
+                ephemeral=True,
             )
 
         data = self.bot.guild_data[interaction.user.id]
@@ -89,16 +125,28 @@ class Commands(commands.Cog):
                 ephemeral=True,
             )
 
-        json_string = json.dumps(data, indent=4)
+        json_string = json.dumps(
+            data,
+            indent=4,
+        )
         json_response = io.StringIO(json_string)
-        file = discord.File(json_response, filename="user_data.json")
+        file = discord.File(
+            json_response,
+            filename="user_data.json",
+        )
 
         oauth_db = await utils.make_oauth_database(data)
 
-        sqlite_file = discord.File(oauth_db, filename="data.db")
+        sqlite_file = discord.File(
+            oauth_db,
+            filename="data.db",
+        )
         # needs to use f.name for the location of the file.
 
-        files = [file, sqlite_file]
+        files = [
+            file,
+            sqlite_file,
+        ]
 
         await interaction.response.send_message(
             "Here's your data(stats will be around in the future)",
@@ -106,18 +154,31 @@ class Commands(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(description="Clears data", name="clear-data")
-    async def clear_data(self, interaction: discord.Interaction):
+    @app_commands.command(
+        description="Clears data",
+        name="clear-data",
+    )
+    async def clear_data(
+        self,
+        interaction: discord.Interaction,
+    ):
         if not self.bot.guild_data.get(interaction.user.id):
             return await interaction.response.send_message(
-                "You have no data stored with this right now", ephemeral=True
+                "You have no data stored with this right now",
+                ephemeral=True,
             )
 
         del self.bot.guild_data[interaction.user.id]
         # add some validation will not sync in till case.
 
-    @app_commands.command(description="Setups up oauth but sends data only to the site", name="site-setup")
-    async def site_setup(self, interaction: discord.Interaction):
+    @app_commands.command(
+        description="Setups up oauth but sends data only to the site",
+        name="site-setup",
+    )
+    async def site_setup(
+        self,
+        interaction: discord.Interaction,
+    ):
 
         params = {
             "client_id": self.bot.user.id,
@@ -141,7 +202,13 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
+        view.add_item(
+            discord.ui.Button(
+                label=f"Setup",
+                url=redirect_url,
+                style=discord.ButtonStyle.link,
+            )
+        )
 
         await interaction.response.send_message(
             "Please Click on the button url to authorize oauth",
@@ -153,7 +220,10 @@ class Commands(commands.Cog):
         description="Setups up oauth but sends stats to the site only",
         name="stats-setup",
     )
-    async def stats_setup(self, interaction: discord.Interaction):
+    async def stats_setup(
+        self,
+        interaction: discord.Interaction,
+    ):
 
         params = {
             "client_id": self.bot.user.id,
@@ -177,7 +247,13 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
+        view.add_item(
+            discord.ui.Button(
+                label=f"Setup",
+                url=redirect_url,
+                style=discord.ButtonStyle.link,
+            )
+        )
 
         await interaction.response.send_message(
             "Please Click on the button url to authorize oauth",
@@ -185,8 +261,14 @@ class Commands(commands.Cog):
             ephemeral=True,
         )
 
-    @app_commands.command(description="sends link to bot's source code", name="source")
-    async def source(self, interaction: discord.Interaction):
+    @app_commands.command(
+        description="sends link to bot's source code",
+        name="source",
+    )
+    async def source(
+        self,
+        interaction: discord.Interaction,
+    ):
 
         view = discord.ui.View()
         view.add_item(
@@ -197,11 +279,18 @@ class Commands(commands.Cog):
             )
         )
         await interaction.response.send_message(
-            "Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool", view=view
+            "Source: https://github.com/JDJG-Holding-Team/GuildInfoBotTool",
+            view=view,
         )
 
-    @app_commands.command(description="Gives the owner's discord information", name="owner")
-    async def _owner(self, interaction: discord.Interaction):
+    @app_commands.command(
+        description="Gives the owner's discord information",
+        name="owner",
+    )
+    async def _owner(
+        self,
+        interaction: discord.Interaction,
+    ):
 
         info = await self.bot.application_info()
         owner_id = info.team.owner_id if info.team else info.owner.id
@@ -212,10 +301,18 @@ class Commands(commands.Cog):
                 owner = await self.bot.fetch_user(user_id)
 
             except discord.errors.NotFound:
-                return await interaction.response.send_message("Owner not found", ephemeral=True)
+                return await interaction.response.send_message(
+                    "Owner not found",
+                    ephemeral=True,
+                )
 
-        await interaction.response.send_message(f"Let {owner} know that there is a problem", ephemeral=True)
+        await interaction.response.send_message(
+            f"Let {owner} know that there is a problem",
+            ephemeral=True,
+        )
 
 
-async def setup(bot: GuildInfoTool):
+async def setup(
+    bot: GuildInfoTool,
+):
     await bot.add_cog(Commands(bot))

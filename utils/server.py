@@ -3,11 +3,20 @@ import os
 
 import aiohttp
 import discord
-from aiohttp import web
-from fastapi import FastAPI
+from aiohttp import (
+    web,
+)
+from fastapi import (
+    FastAPI,
+)
 
 
-async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_uri: str):
+async def handle_basic_response(
+    app: FastAPI,
+    code: str,
+    state: str,
+    redirect_uri: str,
+):
 
     states = app.state.states
     if not state in states:
@@ -33,7 +42,10 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     resp = await session.post(
         f"{api_endpoint}/oauth2/token",
         data=data,
-        auth=aiohttp.BasicAuth(client_id, client_secret),
+        auth=aiohttp.BasicAuth(
+            client_id,
+            client_secret,
+        ),
     )
 
     if not resp.ok:
@@ -48,7 +60,10 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
-    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
+    resp = await session.get(
+        f"{api_endpoint}/users/@me",
+        headers=headers,
+    )
 
     if not resp.ok:
         return "Grabbing data failed."
@@ -62,7 +77,10 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         # could I possibly put a warning in here and then update the state data, idk?
         # wouldn't code be weird though ?
 
-    resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
+    resp = await session.get(
+        f"{api_endpoint}/oauth2/@me",
+        headers=headers,
+    )
 
     if not resp.ok:
         return "Grabbing data failed."
@@ -74,14 +92,20 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     # indentify?
     # maybe more data below:
 
-    resp = await session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers)
+    resp = await session.get(
+        f"{api_endpoint}/users/@me/guilds?with_counts=True",
+        headers=headers,
+    )
 
     if not resp.ok:
         return "Grabbing data failed."
 
     guilds = await resp.json()
 
-    resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
+    resp = await session.get(
+        f"{api_endpoint}/users/@me/connections",
+        headers=headers,
+    )
 
     if not resp.ok:
         return "Grabbing data failed."

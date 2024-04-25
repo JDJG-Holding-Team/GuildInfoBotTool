@@ -11,7 +11,9 @@ class RedirectEnum(enum.IntEnum):
     stats = 2
 
 
-def stats_builder(data: dict):
+def stats_builder(
+    data: dict,
+):
 
     user = data["user"]
     app_data = data["app"]
@@ -30,7 +32,9 @@ def stats_builder(data: dict):
     # guild count with specific types in the future.
 
 
-async def make_oauth_database(oauth_data: dict):
+async def make_oauth_database(
+    oauth_data: dict,
+):
     # also add support for the asqlite version in the future too.
 
     with tempfile.NamedTemporaryFile(mode="w") as f:

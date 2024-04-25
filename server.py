@@ -3,23 +3,44 @@ import io
 import json
 import os
 import secrets
-from contextlib import asynccontextmanager
-from typing import Any, Dict, Optional, Union
+from contextlib import (
+    asynccontextmanager,
+)
+from typing import (
+    Any,
+    Dict,
+    Optional,
+    Union,
+)
 
 import aiohttp
 import asyncpg
 import discord
-from dotenv import load_dotenv
 import uvicorn
-from fastapi import FastAPI, Response
-from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
+from dotenv import (
+    load_dotenv,
+)
+from fastapi import (
+    FastAPI,
+    Response,
+)
+from fastapi.responses import (
+    HTMLResponse,
+    ORJSONResponse,
+    PlainTextResponse,
+)
 
 import utils
-from utils import RedirectEnum
+from utils import (
+    RedirectEnum,
+)
 
 
 class CustomRecordClass(asyncpg.Record):
-    def __getattr__(self, name: str) -> Any:
+    def __getattr__(
+        self,
+        name: str,
+    ) -> Any:
         if name in self.keys():
             return self[name]
         return super().__getattr__(name)
@@ -30,14 +51,22 @@ class CustomRecordClass(asyncpg.Record):
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(
+    app: FastAPI,
+):
     async with (
         aiohttp.ClientSession() as app.state.session,
-        asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db,
+        asyncpg.create_pool(
+            os.getenv("PSQL_URL"),
+            record_class=CustomRecordClass,
+        ) as db,
     ):
         app.state.db = db
         app.state.states = {}
-        guild_data: Dict[int, dict] = {}
+        guild_data: Dict[
+            int,
+            dict,
+        ] = {}
         app.state.guild_data = guild_data
 
         # just easier to create the stats does not need to be awaited.
@@ -49,24 +78,44 @@ app = FastAPI(lifespan=lifespan)
 # will need to be ran properly through awaitable method or ipc.
 
 
-@app.get("/", response_class=PlainTextResponse)
+@app.get(
+    "/",
+    response_class=PlainTextResponse,
+)
 async def main():
     return "Welcome Please let the bot direct you to the right spots"
 
 
-@app.get("/code", response_class=PlainTextResponse)
-async def _code(code: Optional[str] = None, state: Optional[str] = None):
+@app.get(
+    "/code",
+    response_class=PlainTextResponse,
+)
+async def _code(
+    code: Optional[str] = None,
+    state: Optional[str] = None,
+):
 
     redirect_uri = os.environ["redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse(
+            "Missing arguments you(need code and state)",
+            status_code=401,
+        )
 
-    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+    data = await utils.server.handle_basic_response(
+        app,
+        code,
+        state,
+        redirect_uri,
+    )
     # possibly better way to pass app but idk what.
 
     if isinstance(data, str):
-        return PlainTextResponse(data, status_code=401)
+        return PlainTextResponse(
+            data,
+            status_code=401,
+        )
 
     user_id = int(data["user"]["id"])
     # this should work ok.
@@ -79,7 +128,11 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
 
 @app.get("/full-data")
-async def full_data(response: Response, code: Optional[str] = None, state: Optional[str] = None):
+async def full_data(
+    response: Response,
+    code: Optional[str] = None,
+    state: Optional[str] = None,
+):
 
     # possibly better way to get app maybe https://fastapi.tiangolo.com/reference/request/#fastapi.Request
     # would this allow me to have my own session with the local broswer to request for nickname data.
@@ -87,14 +140,28 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     redirect_uri = os.environ["website_redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse(
+            "Missing arguments you(need code and state)",
+            status_code=401,
+        )
 
-    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+    data = await utils.server.handle_basic_response(
+        app,
+        code,
+        state,
+        redirect_uri,
+    )
 
     if isinstance(data, str):
-        return PlainTextResponse(data, status_code=401)
+        return PlainTextResponse(
+            data,
+            status_code=401,
+        )
 
-    json_string = json.dumps(data, indent=4)
+    json_string = json.dumps(
+        data,
+        indent=4,
+    )
     json_response = io.StringIO(json_string)
 
     oauth_db = await utils.make_oauth_database(data)
@@ -146,17 +213,31 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
 
 
 @app.get("/stats")
-async def stats(code: Optional[str] = None, state: Optional[str] = None):
+async def stats(
+    code: Optional[str] = None,
+    state: Optional[str] = None,
+):
 
     redirect_uri = os.environ["stats_redirect_url"]
 
     if not code or not state:
-        return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
+        return PlainTextResponse(
+            "Missing arguments you(need code and state)",
+            status_code=401,
+        )
 
-    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+    data = await utils.server.handle_basic_response(
+        app,
+        code,
+        state,
+        redirect_uri,
+    )
 
     if isinstance(data, str):
-        return PlainTextResponse(data, status_code=401)
+        return PlainTextResponse(
+            data,
+            status_code=401,
+        )
 
     return PlainTextResponse("Stats in the future")
 
@@ -166,7 +247,10 @@ async def stats(code: Optional[str] = None, state: Optional[str] = None):
     # although stats should report name information I do not remeber what this file says.
 
 
-@app.get("/generate-url", response_class=ORJSONResponse)
+@app.get(
+    "/generate-url",
+    response_class=ORJSONResponse,
+)
 async def generate_url(
     client_id: Optional[int] = None,
     user_id: Optional[int] = None,
@@ -175,7 +259,10 @@ async def generate_url(
     if not client_id or not user_id or not redirect_int:
 
         data = {"error": "Please provide a valid integer for (client_id, user_id, and redirect_int)"}
-        return ORJSONResponse(data, status_code=401)
+        return ORJSONResponse(
+            data,
+            status_code=401,
+        )
 
     state = secrets.token_urlsafe(32)
     app.state.states[state] = user_id
@@ -197,7 +284,12 @@ async def generate_url(
     url = discord.utils.oauth_url(
         client_id,
         redirect_uri=redirect_url,
-        scopes=("identify", "connections", "guilds", "guilds.members.read"),
+        scopes=(
+            "identify",
+            "connections",
+            "guilds",
+            "guilds.members.read",
+        ),
         state=state,
     )
     # unused guild.members.read for now will be using it in a different method (if it comes back).
@@ -212,7 +304,11 @@ if not os.getenv("PSQL_URL"):
 
 
 async def main():
-    config = uvicorn.Config("server:app", port=3000, log_level="debug")
+    config = uvicorn.Config(
+        "server:app",
+        port=3000,
+        log_level="debug",
+    )
     server = uvicorn.Server(config)
     await server.serve()
 

@@ -1,25 +1,47 @@
 import os
 import sys
 import traceback
-from typing import Any, Dict, Optional
+from typing import (
+    Any,
+    Dict,
+    Optional,
+)
 
 import aiohttp
 import discord
 import uvicorn
-from discord.ext import commands
-from dotenv import load_dotenv
+from discord.ext import (
+    commands,
+)
+from dotenv import (
+    load_dotenv,
+)
 
-from cogs import EXTENSIONS
+from cogs import (
+    EXTENSIONS,
+)
 
 
 class GuildInfoTool(commands.Bot):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
 
-        self.guild_data: Dict[int, dict] = {}
+        self.guild_data: Dict[
+            int,
+            dict,
+        ] = {}
 
-        super().__init__(*args, **kwargs)
+        super().__init__(
+            *args,
+            **kwargs,
+        )
 
-    async def setup_hook(self) -> None:
+    async def setup_hook(
+        self,
+    ) -> None:
         for cog in EXTENSIONS:
             try:
                 await self.load_extension(f"{cog}")
@@ -32,14 +54,21 @@ class GuildInfoTool(commands.Bot):
         # import it from utils
         # pyzmq localhost server: 5555
 
-    async def close(self) -> None:
+    async def close(
+        self,
+    ) -> None:
         await self.session.close()
 
         # close zmq server here
 
         await super().close()
 
-    async def on_error(self, event, *args: Any, **kwargs: Any) -> None:
+    async def on_error(
+        self,
+        event,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         more_information = sys.exc_info()
         error_wanted = traceback.format_exc()
         traceback.print_exc()
