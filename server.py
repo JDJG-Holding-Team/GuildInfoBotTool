@@ -114,6 +114,7 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     <a href="download_link.sqlite" download>Download as SQLite</a>
     """
     # suggested solution from python.
+    # write actual stats there soon
 
     return HTMLResponse(content=html)
 
