@@ -6,10 +6,10 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
+import pyzmq
 import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
-import pyzmq
 
 from cogs import EXTENSIONS
 
