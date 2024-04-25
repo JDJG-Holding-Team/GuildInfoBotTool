@@ -5,7 +5,6 @@ import asqlite
 import discord
 
 
-
 class RedirectEnum(enum.IntEnum):
     regular = 0
     website = 1
@@ -51,6 +50,3 @@ async def make_oauth_database(oauth_data: dict):
 
     return f.name
     # all you need appreantly.
-
-
-
