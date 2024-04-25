@@ -183,7 +183,8 @@ if __name__ == "__main__":
         asyncio.run(main())
 
     except KeyboardInterrupt as e:
-        print("Closed the program thank you for using it:)")
+        pass
+        
 
 
 # may also run in the command line idk yet
