@@ -78,7 +78,7 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     key_validation = secrets.token_urlsafe(32)
 
     response.set_cookie(key="secret_key", value=key_validation)
-    
+
     # will need to be added to database as encypted.
     # prevents people from downloading wrong data.
 
