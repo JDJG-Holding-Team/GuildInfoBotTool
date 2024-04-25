@@ -9,7 +9,7 @@ from typing import Dict, Optional, Union
 import aiohttp
 import asqlite
 import discord
-import pyzmq
+import zmq
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse, PlainTextResponse

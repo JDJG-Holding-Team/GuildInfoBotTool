@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 
 import aiohttp
 import discord
-import pyzmq
+import zmq
 import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -30,12 +30,12 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        # run pyzmq server here.
+        # run zmq server here.
 
     async def close(self) -> None:
         await self.session.close()
 
-        # close pyzmq server here
+        # close zmq server here
 
         await super().close()
 
