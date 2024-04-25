@@ -29,7 +29,6 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         "code": code,
         "redirect_uri": redirect_uri,
     }
-    
 
     resp = await session.post(
         f"{api_endpoint}/oauth2/token",
