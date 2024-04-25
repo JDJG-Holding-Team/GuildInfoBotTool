@@ -4,3 +4,4 @@ git+https://github.com/Rapptz/asqlite/
 python-dotenv
 fastapi[all]
 uvicorn
+pyzmq

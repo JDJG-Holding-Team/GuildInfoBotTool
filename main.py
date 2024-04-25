@@ -8,11 +8,9 @@ import discord
 import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
+import pyzmq
 
 from cogs import EXTENSIONS
-
-# from server import app  # only solution I could get for importing app. Likely won't work to pass data.
-
 
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -30,15 +28,12 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        # config = uvicorn.Config("server.server:app", port=3000, log_level="debug")
-        # server = uvicorn.Server(config)
-        # app.state.guild_data = self.guild_data
-        # self.server = server
-        # self.loop.create_task(server.serve())
+        # run pyzmq server here.
 
     async def close(self) -> None:
         await self.session.close()
-        # await self.server.shutdown()
+        
+        # close pyzmq server here
 
         await super().close()
 
