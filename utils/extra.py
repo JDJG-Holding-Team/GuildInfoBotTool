@@ -27,6 +27,8 @@ def stats_builder(data: dict):
     connections = data["connections"]
     # unknown for connection stats.
 
+    # guild count with specific types in the future.
+
 
 async def make_oauth_database(oauth_data: dict):
     # also add support for the asqlite version in the future too.
