@@ -29,7 +29,7 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         "code": code,
         "redirect_uri": redirect_uri,
     }
-    # needs cleaning up
+    
 
     resp = await session.post(
         f"{api_endpoint}/oauth2/token",
@@ -45,6 +45,7 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     token_type = data_response["token_type"]
 
     # make sure we all get all data under ("identify", "guilds", "connections", "guilds.members.read", "connections")
+    # guild.members.read will come back if nickname is runnable on the broswer.
 
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
@@ -60,6 +61,7 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     if user_data_id != user_id:
         return "Mismatched user_id data. Something fishy is going on here."
         # could I possibly put a warning in here and then update the state data, idk?
+        # wouldn't code be weird though ?
 
     resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
 
@@ -105,5 +107,6 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     complete_data["connections"] = connections
     """
     # old code the new one is better.
+    # re-add nicknames if we get a new method.
 
     return complete_data
