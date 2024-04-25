@@ -12,6 +12,7 @@ import pyzmq
 
 from cogs import EXTENSIONS
 
+
 class GuildInfoTool(commands.Bot):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
 
@@ -32,7 +33,7 @@ class GuildInfoTool(commands.Bot):
 
     async def close(self) -> None:
         await self.session.close()
-        
+
         # close pyzmq server here
 
         await super().close()
