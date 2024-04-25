@@ -1,3 +1,4 @@
+import asyncio
 import io
 import json
 import os
@@ -171,5 +172,11 @@ async def generate_url(
     return {"url": url}
 
 
-uvicorn.run("server:app", port=3000, log_level="debug")
+
+async def main():
+    config = uvicorn.Config("server:app", port=3000, log_level="debug")
+    server = uvicorn.Server(config)
+    await server.serve()
+
+asyncio.run(main())
 # may also run in the command line idk yet
