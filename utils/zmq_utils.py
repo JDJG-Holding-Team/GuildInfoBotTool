@@ -20,12 +20,14 @@ bot_url = "tcp://127.0.0.1:5555"
 
 ctx = Context.instance()
 
+
 async def ping() -> None:
     """print dots to indicate idleness"""
     while True:
         await asyncio.sleep(0.5)
-        print('....')
+        print("....")
         # does it need to always print dots?
+
 
 async def bot_receiver():
     """receive messages with polling"""
@@ -38,15 +40,15 @@ async def bot_receiver():
         if pull in dict(events):
             print("recving", events)
             msg = await pull.recv_multipart()
-            print('recvd', msg)
+            print("recvd", msg)
 
-async def bot_sender(user_id : int) -> None:
+
+async def bot_sender(user_id: int) -> None:
     "sends messages from the bot"
     push = ctx.socket(zmq.PUSH)
     push.bind(server_url)
-    
 
-    data_request = json.dumps({"user_id" : user_id})
+    data_request = json.dumps({"user_id": user_id})
     await push.send_multipart(data_request)
     # or does push.send_string work better?
 
@@ -62,15 +64,15 @@ async def server_receiver():
         if pull in dict(events):
             print("recving", events)
             msg = await pull.recv_multipart()
-            print('recvd', msg)
+            print("recvd", msg)
 
 
-async def server_sender(user_id : int) -> None:
+async def server_sender(user_id: int) -> None:
     "sends messages from the server"
     push = ctx.socket(zmq.PUSH)
     push.bind(bot_url)
 
-    data_request = json.dumps({"data" : data, "user_id" : user_id})
+    data_request = json.dumps({"data": data, "user_id": user_id})
     await push.send_multipart(data_request)
     # or does push.send_string work better?
 
