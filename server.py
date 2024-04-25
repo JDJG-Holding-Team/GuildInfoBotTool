@@ -142,10 +142,14 @@ async def stats(code: Optional[str] = None, state: Optional[str] = None):
 
 @app.get("/generate-url", response_class=ORJSONResponse)
 async def generate_url(
-    client_id: int,
-    user_id: int,
-    redirect_int: int,
+    client_id: Optional[int] = None,
+    user_id: Optional[int] = None,
+    redirect_int: Optional[int] = None,
 ):
+    if not client_id or not user_id or not redirect_int:
+
+        data = {"error" : "Please provide a valid integer for (client_id, user_id, and redirect_int)"}
+        return ORJSONResponse(data, status_code=401)
 
     state = secrets.token_urlsafe(32)
     app.state.states[state] = user_id
