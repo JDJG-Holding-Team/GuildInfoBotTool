@@ -42,7 +42,6 @@ async def main():
 
 @app.get("/code", response_class=PlainTextResponse)
 async def _code(code: Optional[str] = None, state: Optional[str] = None):
-    print(code, state)
 
     redirect_uri = os.environ["redirect_url"]
 
@@ -65,7 +64,6 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
 @app.get("/full-data")
 async def full_data(code: Optional[str] = None, state: Optional[str] = None):
-    print(code, state)
 
     redirect_uri = os.environ["website_redirect_url"]
 
