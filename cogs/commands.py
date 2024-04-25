@@ -2,10 +2,8 @@ from __future__ import annotations
 
 import io
 import json
-import tempfile
 from typing import TYPE_CHECKING
 
-import asqlite
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -91,28 +89,12 @@ class Commands(commands.Cog):
         json_response = io.StringIO(json_string)
         file = discord.File(json_response, filename="user_data.json")
 
-        with tempfile.NamedTemporaryFile(mode="w") as f:
-            # delete on close may be already used
-            # delete is necessary possibly but idk, I just know delete_on_close=True isn't in python 3.11
-            # is delete needed?
-            # appraently it's also autodeleted
-            # https://stackoverflow.com/questions/11043372/how-to-use-tempfile-namedtemporaryfile
-            # https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+        oauth_db = await utils.make_oauth_database(data)
 
-            # does f even work with it?
+        sqlite_file = discord.File(oauth_db, filename="data.db")
+        # needs to use f.name for the location of the file.
 
-            async with asqlite.connect(f.name) as conn:
-                async with conn.cursor() as cursor:
-                    print(conn)
-
-                # I am unsure about what tables in execute right now.
-
-            # unsure how to handle the json response right now will ask dpy for help for that.
-
-            sqlite_file = discord.File(f.name, filename="data.db")
-            # needs to use f.name for the location of the file.
-
-            files = [file, sqlite_file]
+        files = [file, sqlite_file]
 
         await interaction.response.send_message(
             "Here's your data(stats will be around in the future)",

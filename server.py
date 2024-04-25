@@ -3,12 +3,10 @@ import io
 import json
 import os
 import secrets
-import tempfile
 from contextlib import asynccontextmanager
 from typing import Dict, Optional, Union
 
 import aiohttp
-import asqlite
 import asyncpg
 import discord
 from dotenv import load_dotenv
@@ -108,23 +106,8 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
 
-    # also add support for the asqlite version in the future too.
-
-    with tempfile.NamedTemporaryFile(mode="w") as f:
-        # delete on close may be already used
-        # delete is necessary possibly but idk, I just know delete_on_close=True isn't in python 3.11
-        # is delete needed?
-        # appraently it's also autodeleted
-        # https://stackoverflow.com/questions/11043372/how-to-use-tempfile-namedtemporaryfile
-        # https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
-
-        # does f even work with it?
-
-        async with asqlite.connect(f.name) as conn:
-            async with conn.cursor() as cursor:
-                print(conn)
-
-        # unsure how to handle the json response right now will ask dpy for help for that.
+    oauth_db = await utils.make_oauth_database(data)
+    # can also be used for bot stuff and for later if this is moved.
 
     # file support
 
