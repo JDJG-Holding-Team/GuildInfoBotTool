@@ -107,12 +107,12 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
     # html responses with download html attribute
     # le pain.
 
-    html = """
+    html = f"""
     <pre>
     { "nice": "stats" }
     </pre>
     <a href="download_link.json" download>Download as JSON</a>
-    <a href="download_link.sqlite" download>Download as SQLite</a>
+    <a href="{f.name}" download>Download as SQLite</a>
     """
     # suggested solution from python.
     # write actual stats there soon
