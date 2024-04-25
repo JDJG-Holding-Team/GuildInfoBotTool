@@ -178,6 +178,7 @@ async def generate_url(
 
     return {"url": url}
 
+
 if not os.getenv("redirect_url") or not os.getenv("website_redirect_url") or not os.getenv("stats_redirect_url"):
     load_dotenv()
     # only gunatrees data is loaded properly
