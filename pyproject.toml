@@ -7,14 +7,14 @@ authors = ["JDJG <jdjgbot@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.11.0,<4.0"
-discord-py = {extras = ["speed"]}
+discord-py = {extras = ["speed"], version = ">=2.3.2"}
 jishaku = {git = "https://github.com/Gorialis/jishaku.git"}
 asqlite = {git = "https://github.com/Rapptz/asqlite/"}
-python-dotenv
-fastapi = {extras = ["all"]}
-uvicorn
-pyzmq
-
+python-dotenv = ">=1.0.1"
+fastapi = {extras = ["all"], version = ">=0.110.2"}
+uvicorn = ">=0.29.0"
+pyzmq = ">=26.0.2"
+psutil = ">=5.9.8"
 
 [build-system]
 requires = ["poetry-core"]
