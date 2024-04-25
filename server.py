@@ -70,6 +70,7 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
     app.state.guild_data[user_id] = data
     # pass data through rpc somehow.
+    # I have no idea how to use zmq.
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 
