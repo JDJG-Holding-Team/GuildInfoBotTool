@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 import zmq
 import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse, StreamingResponse, PlainTextResponse
+from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 
 import utils
 from utils import RedirectEnum
@@ -98,9 +98,26 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
         # unsure how to handle the json response right now will ask dpy for help for that.
 
-    # respond with files instead.
+    # file support
 
-    return StreamingResponse(f, media_type="application/json")
+    # find out how to download the json and also to respond with the stats via html
+
+    # will be json response in a bit or not idk.
+
+    # html responses with download html attribute
+    # le pain.
+
+    html = """
+    <pre>
+    { "nice": "stats" }
+    </pre>
+    <a href="download_link.json" download>Download as JSON</a>
+    <a href="download_link.sqlite" download>Download as SQLite</a>
+    """
+    # suggested solution from python.
+    # write actual stats there soon
+
+    return HTMLResponse(content=html)
 
 
 @app.get("/stats")
