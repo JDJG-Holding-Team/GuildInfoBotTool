@@ -28,13 +28,11 @@ class CustomRecordClass(asyncpg.Record):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with aiohttp.ClientSession() as app.state.session:
+    async with aiohttp.ClientSession() as app.state.session, asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db:
+        app.state.db = db
         app.state.states = {}
         guild_data: Dict[int, dict] = {}
         app.state.guild_data = guild_data
-
-        async with asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db:
-            app.state.db = db
 
         # just easier to create the stats does not need to be awaited.
         yield  # probaly closes when it is done.
@@ -76,6 +74,9 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 @app.get("/full-data")
 async def full_data(response: Response, code: Optional[str] = None, state: Optional[str] = None):
 
+    # possibly better way to get app maybe https://fastapi.tiangolo.com/reference/request/#fastapi.Request
+    # would this allow me to have my own session with the local broswer to request for nickname data.
+
     redirect_uri = os.environ["website_redirect_url"]
 
     if not code or not state:
@@ -86,22 +87,6 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
 
-    key_validation = secrets.token_urlsafe(32)
-
-    user_id = int(data["user"]["id"])
-    # validated earlier
-
-    record = await app.state.db.fetchrow("SELECT * FROM VALIDATION_KEYS SELECT user_id = $1", user_id)
-    if not record:
-        await app.state.db.execute("INSERT INTO VALIDATION_KEYS VAULUES($1, $2)", user_id, key_validation)
-        # how do I make this encypted
-
-        response.set_cookie(key="validation_key", value=key_validation)
-
-    # re-use cookie I suppose?
-
-    # will need to be added to database as encypted.
-    # prevents people from downloading wrong data.
 
     json_string = json.dumps(data, indent=4)
     json_response = io.StringIO(json_string)
