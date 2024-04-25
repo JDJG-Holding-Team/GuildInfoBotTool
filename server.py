@@ -148,7 +148,7 @@ async def generate_url(
 ):
     if not client_id or not user_id or not redirect_int:
 
-        data = {"error" : "Please provide a valid integer for (client_id, user_id, and redirect_int)"}
+        data = {"error": "Please provide a valid integer for (client_id, user_id, and redirect_int)"}
         return ORJSONResponse(data, status_code=401)
 
     state = secrets.token_urlsafe(32)
