@@ -103,7 +103,6 @@ async def full_data(code: Optional[str] = None, state: Optional[str] = None):
 
     # will be json response in a bit or not idk.
 
-
     # html responses with download html attribute
     # le pain.
 
