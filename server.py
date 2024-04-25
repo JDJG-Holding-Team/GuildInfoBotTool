@@ -4,7 +4,7 @@ import json
 import os
 import secrets
 from contextlib import asynccontextmanager
-from typing import Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import aiohttp
 import asyncpg
