@@ -10,8 +10,8 @@ import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from cogs import EXTENSIONS
 import utils
+from cogs import EXTENSIONS
 
 
 class GuildInfoTool(commands.Bot):
