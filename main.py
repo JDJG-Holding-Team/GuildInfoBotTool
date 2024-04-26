@@ -28,14 +28,13 @@ class GuildInfoTool(commands.Bot):
 
         self.session = aiohttp.ClientSession()
 
-        # run zmq server here.
-        # import it from utils
-        # pyzmq localhost server: 5555
+        # pika suggested
+        # port 5555
 
     async def close(self) -> None:
         await self.session.close()
 
-        # close zmq server here
+        # pika server closed
 
         await super().close()
 

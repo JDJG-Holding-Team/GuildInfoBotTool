@@ -25,8 +25,8 @@ class CustomRecordClass(asyncpg.Record):
         return super().__getattr__(name)
 
 
-# pyzmq localhost server: 5554
-# load pzmq server from utils
+# pika localhost server: 5554
+# load pika server from utils
 
 
 @asynccontextmanager
@@ -73,7 +73,7 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
     app.state.oauth_data[user_id] = data
     # pass data through rpc somehow.
-    # I have no idea how to use zmq.
+    # I have no idea how to use rabbit.
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 
