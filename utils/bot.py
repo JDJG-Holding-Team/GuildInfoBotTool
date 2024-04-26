@@ -1,0 +1,58 @@
+import aiohttp
+import discord
+
+async def grab_oauth_data(session: aiohttp.ClientSession , access_token: str, token_type: str, refresh_token: str, user_id: str):
+
+    api_endpoint = discord.http.Route.BASE
+
+    # make sure it refreshs if this does not work
+
+    headers = {"authorization": f"{token_type} {access_token}"}
+    # not sure if that's right but it seems to match.
+    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
+
+    if not resp.ok:
+        # if the data says the token expired then try using the refresh token if that fails let the user know.
+        return "Grabbing data failed."
+    
+
+    user_data = await resp.json()
+    user_data_id = int(user_data.get("id"))
+    # I hate grabbing the data like this.
+
+    if user_data_id != user_id:
+        return "Mismatched user_id data. Something fishy is going on here."
+        # could I possibly put a warning in here and then update the state data, idk?
+        # wouldn't code be weird though ?
+
+    resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
+
+    if not resp.ok:
+        return "Grabbing data failed with getting oauth app data."
+
+    app_data = await resp.json()
+
+    resp = await session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers)
+
+    if not resp.ok:
+        return "Grabbing data failed with guilds."
+
+    guilds = await resp.json()
+
+    resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
+
+    if not resp.ok:
+        return "Grabbing data failed with connections."
+
+    connections = await resp.json()
+
+    complete_data = {
+        "user": user_data,
+        "app": app_data,
+        "guilds": guilds,
+        "connections": connections,
+    }
+
+    return complete_data
+    # might be worth making this be ran onto an object(typedDict)
+    

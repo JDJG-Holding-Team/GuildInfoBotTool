@@ -109,3 +109,39 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     # re-add nicknames if we get a new method.
 
     return complete_data
+
+
+async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: str):
+
+    states = app.state.states
+    if not state in states:
+        return "Invalid state(please don't fake states or please try again)"
+        # make sure to check what was returned on the other end.
+
+    # prevents fake sessions abusing our calls
+
+    user_id = states[state]
+    api_endpoint = discord.http.Route.BASE
+    client_id = os.environ["client_id"]
+    client_secret = os.environ["client_secret"]
+    session = app.state.session
+
+    # this is basically the same way as long
+
+    data = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": redirect_uri,
+    }
+
+    resp = await session.post(
+        f"{api_endpoint}/oauth2/token",
+        data=data,
+        auth=aiohttp.BasicAuth(client_id, client_secret),
+    )
+
+    if not resp.ok:
+        return "Grabbing data failed."
+
+    data_response = await resp.json()
+    return data_response

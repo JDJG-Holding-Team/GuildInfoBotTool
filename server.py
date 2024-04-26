@@ -37,8 +37,6 @@ async def lifespan(app: FastAPI):
     ):
         app.state.db = db
         app.state.states = {}
-        oauth_data: Dict[int, dict] = {}
-        app.state.oauth_data = oauth_data
 
         # just easier to create the stats does not need to be awaited.
         yield  # probaly closes when it is done.
@@ -62,18 +60,14 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
 
-    data = await utils.server.handle_basic_response(app, code, state, redirect_uri)
+    data = await utils.server.handle_grab_token(app, code, state, redirect_uri)
     # possibly better way to pass app but idk what.
 
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
 
-    user_id = int(data["user"]["id"])
-    # this should work ok.
 
-    app.state.oauth_data[user_id] = data
-    # pass data through rpc somehow.
-    # I have no idea how to use rabbit.
+    # put session token and refresh token in database and access_token.
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 
