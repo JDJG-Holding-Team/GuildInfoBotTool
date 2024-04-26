@@ -4,12 +4,14 @@ import traceback
 from typing import Any, Dict, Optional
 
 import aiohttp
+import asyncpg
 import discord
 import uvicorn
 from discord.ext import commands
 from dotenv import load_dotenv
 
 from cogs import EXTENSIONS
+import utils
 
 
 class GuildInfoTool(commands.Bot):
@@ -27,14 +29,11 @@ class GuildInfoTool(commands.Bot):
                 traceback.print_exc()
 
         self.session = aiohttp.ClientSession()
-
-        # pika suggested
-        # port 5555
+        self.db = await asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=utils.CustomRecordClass)
 
     async def close(self) -> None:
         await self.session.close()
-
-        # pika server closed
+        await self.db.close()
 
         await super().close()
 

@@ -50,3 +50,10 @@ async def make_oauth_database(oauth_data: dict):
 
     return f.name
     # all you need appreantly.
+
+class CustomRecordClass(asyncpg.Record):
+    def __getattr__(self, name: str) -> Any:
+        if name in self.keys():
+            return self[name]
+        return super().__getattr__(name)
+

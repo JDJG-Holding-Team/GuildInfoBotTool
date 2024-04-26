@@ -17,23 +17,11 @@ from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 import utils
 from utils import RedirectEnum
 
-
-class CustomRecordClass(asyncpg.Record):
-    def __getattr__(self, name: str) -> Any:
-        if name in self.keys():
-            return self[name]
-        return super().__getattr__(name)
-
-
-# pika localhost server: 5554
-# load pika server from utils
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with (
         aiohttp.ClientSession() as app.state.session,
-        asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=CustomRecordClass) as db,
+        asyncpg.create_pool(os.getenv("PSQL_URL"), record_class=utils.CustomRecordClass) as db,
     ):
         app.state.db = db
         app.state.states = {}
