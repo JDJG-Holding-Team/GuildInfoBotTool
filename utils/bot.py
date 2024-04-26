@@ -1,7 +1,10 @@
 import aiohttp
 import discord
 
-async def grab_oauth_data(session: aiohttp.ClientSession , access_token: str, token_type: str, refresh_token: str, user_id: str):
+
+async def grab_oauth_data(
+    session: aiohttp.ClientSession, access_token: str, token_type: str, refresh_token: str, user_id: str
+):
 
     api_endpoint = discord.http.Route.BASE
 
@@ -14,7 +17,6 @@ async def grab_oauth_data(session: aiohttp.ClientSession , access_token: str, to
     if not resp.ok:
         # if the data says the token expired then try using the refresh token if that fails let the user know.
         return "Grabbing data failed."
-    
 
     user_data = await resp.json()
     user_data_id = int(user_data.get("id"))
@@ -55,4 +57,3 @@ async def grab_oauth_data(session: aiohttp.ClientSession , access_token: str, to
 
     return complete_data
     # might be worth making this be ran onto an object(typedDict)
-    

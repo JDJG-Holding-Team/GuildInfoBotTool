@@ -66,7 +66,6 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
 
-
     # put session token and refresh token in database and access_token.
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
