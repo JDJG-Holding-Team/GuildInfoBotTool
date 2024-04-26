@@ -7,16 +7,30 @@ async def grab_oauth_data(
 ):
 
     api_endpoint = discord.http.Route.BASE
-
-    # make sure it refreshs if this does not work
+    client_id = os.environ["client_id"]
+    client_secret = os.environ["client_secret"]
 
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
     resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
 
     if not resp.ok:
-        # if the data says the token expired then try using the refresh token if that fails let the user know.
-        return "Grabbing data failed."
+        
+        # https://discord.com/developers/docs/topics/oauth2#authorization-code-grant-refresh-token-exchange-example
+
+        # Refreshs token
+
+        data = {'grant_type': 'refresh_token', 'refresh_token': refresh_token}
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+
+        resp = await session.post(
+        f"{api_endpoint}/oauth2/token",
+        data=data,
+        auth=aiohttp.BasicAuth(client_id, client_secret),
+    )
+
+    if not resp.ok:
+        return "Refresh Token Failed you will need to redo the oauth."
 
     user_data = await resp.json()
     user_data_id = int(user_data.get("id"))
