@@ -33,8 +33,19 @@ async def grab_oauth_data(
             auth=aiohttp.BasicAuth(client_id, client_secret),
         )
 
+        if not resp.ok:
+            return "Refresh Token Failed you will need to redo the oauth."
+        
+        data_response = await resp.json()
+        access_token = data_response["access_token"]
+        token_type = data_response["token_type"]
+
+    headers = {"authorization": f"{token_type} {access_token}"}
+    # not sure if that's right but it seems to match.
+    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
+
     if not resp.ok:
-        return "Refresh Token Failed you will need to redo the oauth."
+        return "Grabbing user data failed"
 
     user_data = await resp.json()
     user_data_id = int(user_data.get("id"))
