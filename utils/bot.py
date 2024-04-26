@@ -15,19 +15,19 @@ async def grab_oauth_data(
     resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
 
     if not resp.ok:
-        
+
         # https://discord.com/developers/docs/topics/oauth2#authorization-code-grant-refresh-token-exchange-example
 
         # Refreshs token
 
-        data = {'grant_type': 'refresh_token', 'refresh_token': refresh_token}
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        data = {"grant_type": "refresh_token", "refresh_token": refresh_token}
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
         resp = await session.post(
-        f"{api_endpoint}/oauth2/token",
-        data=data,
-        auth=aiohttp.BasicAuth(client_id, client_secret),
-    )
+            f"{api_endpoint}/oauth2/token",
+            data=data,
+            auth=aiohttp.BasicAuth(client_id, client_secret),
+        )
 
     if not resp.ok:
         return "Refresh Token Failed you will need to redo the oauth."
