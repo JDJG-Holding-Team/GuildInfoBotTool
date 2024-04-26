@@ -42,7 +42,7 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     data_response = await resp.json()
     access_token = data_response["access_token"]
     token_type = data_response["token_type"]
-    
+
     # make sure we all get all data under ("identify", "guilds", "connections", "guilds.members.read", "connections")
     # guild.members.read will come back if nickname is runnable on the broswer.
 

@@ -35,7 +35,7 @@ async def grab_oauth_data(
 
         if not resp.ok:
             return "Refresh Token Failed you will need to redo the oauth."
-        
+
         data_response = await resp.json()
         access_token = data_response["access_token"]
         token_type = data_response["token_type"]
