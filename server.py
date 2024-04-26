@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, ORJSONResponse, PlainTextResponse
 import utils
 from utils import RedirectEnum
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with (
