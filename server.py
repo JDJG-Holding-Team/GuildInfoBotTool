@@ -55,7 +55,17 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
 
-    # put session token and refresh token in database and access_token.
+    user_id = data["user"]["id"]
+    result = await app.state.db.fetchrow("SELECT * FROM OAUTH_TOKENS WHERE user_id = $1", user_id)
+
+    # wait .......
+    # I am dumb lol
+    # I need to re-do this.
+
+    if result:
+        await app.state.db.execute(
+            "UPDATE OAUTH_TOKENS SET ACCESS_TOKEN = $1 and REFRESH_TOKEN = $2 WHERE user_id = ($3)",   , user_id ,  
+        )
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 

@@ -143,5 +143,23 @@ async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: s
     if not resp.ok:
         return "Grabbing data failed."
 
-    data_response = await resp.json()
-    return data_response
+    token_data = await resp.json()
+
+    headers = {"authorization": f"{token_type} {access_token}"}
+    # not sure if that's right but it seems to match.
+    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
+
+    if not resp.ok:
+        return "Grabbing data failed."
+    
+    user_data = await resp.json()
+    
+    if not user_data.get("id"):
+        return "How do you not have an user id?"
+    
+    complete_data = {
+        "token" : token_data,
+        "user" : user_data,
+    }
+
+    return complete_data
