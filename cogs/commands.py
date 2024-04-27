@@ -62,6 +62,7 @@ class Commands(commands.Cog):
 
     @app_commands.command(description="Sends guild data empherally", name="data")
     async def _data(self, interaction: discord.Interaction):
+    
 
         if not self.bot.oauth_data.get(interaction.user.id):
             # would check to make sure rpc did not have the data if not then it would ignore it.
@@ -69,6 +70,7 @@ class Commands(commands.Cog):
             return await interaction.response.send_message(
                 "You have no data stored with this right now", ephemeral=True
             )
+
 
         data = self.bot.oauth_data[interaction.user.id]
         oauth_user = data["user"]
@@ -108,13 +110,17 @@ class Commands(commands.Cog):
 
     @app_commands.command(description="Clears data", name="clear-data")
     async def clear_data(self, interaction: discord.Interaction):
-        if not self.bot.oauth_data.get(interaction.user.id):
-            return await interaction.response.send_message(
+        # if not self.bot.oauth_data.get(interaction.user.id):
+            # return await interaction.response.send_message(
                 "You have no data stored with this right now", ephemeral=True
-            )
+            # )
 
-        del self.bot.Oauth_data[interaction.user.id]
+        # check db instead.
+
+        # del self.bot.Oauth_data[interaction.user.id]
         # add some validation will not sync in till case.
+
+        # delete db data instead.
 
     @app_commands.command(description="Setups up oauth but sends data only to the site", name="site-setup")
     async def site_setup(self, interaction: discord.Interaction):

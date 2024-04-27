@@ -6,7 +6,7 @@ async def grab_oauth_data(
     session: aiohttp.ClientSession,
     access_token: str,
     refresh_token: str,
-    user_id: str,
+    user_id: int,
 ):
 
     api_endpoint = discord.http.Route.BASE
