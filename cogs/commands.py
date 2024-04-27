@@ -110,10 +110,10 @@ class Commands(commands.Cog):
 
     @app_commands.command(description="Clears data", name="clear-data")
     async def clear_data(self, interaction: discord.Interaction):
-        # if not self.bot.oauth_data.get(interaction.user.id):
-            # return await interaction.response.send_message(
+        if not self.bot.oauth_data.get(interaction.user.id):
+            return await interaction.response.send_message(
                 "You have no data stored with this right now", ephemeral=True
-            # )
+            )
 
         # check db instead.
 
