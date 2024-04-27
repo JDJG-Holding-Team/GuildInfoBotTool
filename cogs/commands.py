@@ -62,7 +62,6 @@ class Commands(commands.Cog):
 
     @app_commands.command(description="Sends guild data empherally", name="data")
     async def _data(self, interaction: discord.Interaction):
-    
 
         if not self.bot.oauth_data.get(interaction.user.id):
             # would check to make sure rpc did not have the data if not then it would ignore it.
@@ -70,7 +69,6 @@ class Commands(commands.Cog):
             return await interaction.response.send_message(
                 "You have no data stored with this right now", ephemeral=True
             )
-
 
         data = self.bot.oauth_data[interaction.user.id]
         oauth_user = data["user"]
