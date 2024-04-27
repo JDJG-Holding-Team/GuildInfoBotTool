@@ -5,7 +5,6 @@ import discord
 async def grab_oauth_data(
     session: aiohttp.ClientSession,
     access_token: str,
-    token_type: str,
     refresh_token: str,
     user_id: str,
 ):
@@ -13,6 +12,8 @@ async def grab_oauth_data(
     api_endpoint = discord.http.Route.BASE
     client_id = os.environ["client_id"]
     client_secret = os.environ["client_secret"]
+    token_type = "Bearer"
+    # should be enough
 
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
