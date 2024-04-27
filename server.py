@@ -58,10 +58,6 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     user_id = data["user"]["id"]
     result = await app.state.db.fetchrow("SELECT * FROM OAUTH_TOKENS WHERE user_id = $1", user_id)
 
-    # wait .......
-    # I am dumb lol
-    # I need to re-do this.
-
     access_token = data["token"]["access_token"]
     refresh_token = data["token"]["refresh_token"]
 
@@ -72,6 +68,9 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
             refresh_token,
             user_id,
         )
+
+    else:
+        await app.state.db.execute("INSERT INTO ACCESS_TOKENS VALUES($1, $2, $3)", user_id, access_token, refresh_token)
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
 
