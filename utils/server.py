@@ -151,15 +151,15 @@ async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: s
 
     if not resp.ok:
         return "Grabbing data failed."
-    
+
     user_data = await resp.json()
-    
+
     if not user_data.get("id"):
         return "How do you not have an user id?"
-    
+
     complete_data = {
-        "token" : token_data,
-        "user" : user_data,
+        "token": token_data,
+        "user": user_data,
     }
 
     return complete_data

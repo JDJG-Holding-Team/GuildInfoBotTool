@@ -67,7 +67,10 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
     if result:
         await app.state.db.execute(
-            "UPDATE OAUTH_TOKENS SET ACCESS_TOKEN = $1 and REFRESH_TOKEN = $2 WHERE user_id = ($3)", access_token, refresh_token, user_id ,  
+            "UPDATE OAUTH_TOKENS SET ACCESS_TOKEN = $1 and REFRESH_TOKEN = $2 WHERE user_id = ($3)",
+            access_token,
+            refresh_token,
+            user_id,
         )
 
     return PlainTextResponse("Grabbing guild data so you can use it in command /data")
