@@ -52,7 +52,7 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
+        view.add_item(discord.ui.Button(label="Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message(
             "Please Click on the button url to authorize oauth",
@@ -145,7 +145,7 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
+        view.add_item(discord.ui.Button(label="Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message(
             "Please Click on the button url to authorize oauth",
@@ -181,7 +181,7 @@ class Commands(commands.Cog):
 
         view = discord.ui.View()
 
-        view.add_item(discord.ui.Button(label=f"Setup", url=redirect_url, style=discord.ButtonStyle.link))
+        view.add_item(discord.ui.Button(label="Setup", url=redirect_url, style=discord.ButtonStyle.link))
 
         await interaction.response.send_message(
             "Please Click on the button url to authorize oauth",
@@ -195,7 +195,7 @@ class Commands(commands.Cog):
         view = discord.ui.View()
         view.add_item(
             discord.ui.Button(
-                label=f"Source",
+                label="Source",
                 url="https://github.com/JDJG-Holding-Team/GuildInfoBotTool",
                 style=discord.ButtonStyle.link,
             )
