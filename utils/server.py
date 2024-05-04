@@ -157,7 +157,7 @@ async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: s
     if not user_data.get("id"):
         return "How do you not have an user id?"
 
-    if user_data.get("id") != user_id:
+    if int(user_data.get("id")) != user_id:
         return "Woah You somehow got access to data you should not have had."
 
     complete_data = {
