@@ -1,6 +1,7 @@
 import enum
 import tempfile
 
+import asyncpg
 import asqlite
 import discord
 
