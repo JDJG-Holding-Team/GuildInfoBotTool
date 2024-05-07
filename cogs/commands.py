@@ -77,7 +77,7 @@ class Commands(commands.Cog):
 
         if user != interaction.user:
 
-            info = await self.bot.application_info()
+            info = self.bot.application
             owner_id = info.team.owner_id if info.team else info.owner.id
             owner = self.bot.get_user(owner_id)
 
@@ -207,7 +207,7 @@ class Commands(commands.Cog):
     @app_commands.command(description="Gives the owner's discord information", name="owner")
     async def _owner(self, interaction: discord.Interaction):
 
-        info = await self.bot.application_info()
+        info = self.bot.application
         owner_id = info.team.owner_id if info.team else info.owner.id
         owner = self.bot.get_user(owner_id)
 
