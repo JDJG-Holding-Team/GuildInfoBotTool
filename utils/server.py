@@ -18,8 +18,8 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
 
     user_id = states[state]
     api_endpoint = discord.http.Route.BASE
-    client_id = os.environ["client_id"]
-    client_secret = os.environ["client_secret"]
+    client_id = os.getenv("client_id")
+    client_secret = os.getenv("client_secret")
     session = app.state.session
 
     # this is basically the same way as long
@@ -30,31 +30,26 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         "redirect_uri": redirect_uri,
     }
 
-    resp = await session.post(
+    async with session.post(
         f"{api_endpoint}/oauth2/token",
         data=data,
         auth=aiohttp.BasicAuth(client_id, client_secret),
-    )
-
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    data_response = await resp.json()
-    access_token = data_response["access_token"]
-    token_type = data_response["token_type"]
+    ) as response:
+        if not response.ok: return "Grabbing data failed."
+        data_response = await response.json()
+        access_token = data_response.get("access_token")
+        token_type = data_response.get("token_type")
 
     # make sure we all get all data under ("identify", "guilds", "connections", "guilds.members.read", "connections")
     # guild.members.read will come back if nickname is runnable on the broswer.
 
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
-    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
+    async with session.get(f"{api_endpoint}/users/@me", headers=headers) as response:
+        if not response.ok: return "Grabbing data failed."
+        user_data = await response.json()
+        user_data_id = int(user_data.get("id"))
 
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    user_data = await resp.json()
-    user_data_id = int(user_data.get("id"))
     # I hate grabbing the data like this.
 
     if user_data_id != user_id:
@@ -62,31 +57,22 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         # could I possibly put a warning in here and then update the state data, idk?
         # wouldn't code be weird though ?
 
-    resp = await session.get(f"{api_endpoint}/oauth2/@me", headers=headers)
-
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    app_data = await resp.json()
+    async with session.get(f"{api_endpoint}/oauth2/@me", headers=headers) as response:
+        if not response.ok: return "Grabbing data failed."
+        app_data = await response.json()
 
     # https://discord.com/developers/docs/topics/oauth2#get-current-authorization-information
 
     # indentify?
     # maybe more data below:
 
-    resp = await session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers)
+    async with session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers) as response:
+        if not response.ok: return "Grabbing data failed."
+        guilds = await response.json()
 
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    guilds = await resp.json()
-
-    resp = await session.get(f"{api_endpoint}/users/@me/connections", headers=headers)
-
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    connections = await resp.json()
+    async with session.get(f"{api_endpoint}/users/@me/connections", headers=headers) as response:
+        if not response.ok: return "Grabbing data failed."
+        connections = await response.json()
 
     # connections
     # are there more things for all the other data?
@@ -95,7 +81,7 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         "user": user_data,
         "app": app_data,
         "guilds": guilds,
-        "connections": connections,
+        "connections": connections
     }
 
     """
@@ -120,10 +106,10 @@ async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: s
 
     # prevents fake sessions abusing our calls
 
-    user_id = states[state]
-    api_endpoint = discord.http.Route.BASE
-    client_id = os.environ["client_id"]
-    client_secret = os.environ["client_secret"]
+    user_id: int = states[state]
+    api_endpoint: str = discord.http.Route.BASE
+    client_id = os.getenv("client_id")
+    client_secret: str = os.getenv("client_secret")
     session = app.state.session
 
     # this is basically the same way as long
@@ -131,38 +117,27 @@ async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: s
     data = {
         "grant_type": "authorization_code",
         "code": code,
-        "redirect_uri": redirect_uri,
+        "redirect_uri": redirect_uri
     }
 
-    resp = await session.post(
+    async with session.post(
         f"{api_endpoint}/oauth2/token",
         data=data,
-        auth=aiohttp.BasicAuth(client_id, client_secret),
-    )
+        auth=aiohttp.BasicAuth(client_id, client_secret)
+    ) as response:
+        if not response.ok: return "Grabbing data failed."
+        token_data = await response.json()
+        access_token = token_data.get("access_token")
+        token_type = token_data.get("token_type")
 
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    token_data = await resp.json()
 
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
-    resp = await session.get(f"{api_endpoint}/users/@me", headers=headers)
-
-    if not resp.ok:
-        return "Grabbing data failed."
-
-    user_data = await resp.json()
-
-    if not user_data.get("id"):
-        return "How do you not have an user id?"
-
-    if int(user_data.get("id")) != user_id:
-        return "Woah You somehow got access to data you should not have had."
-
-    complete_data = {
-        "token": token_data,
-        "user": user_data,
-    }
-
-    return complete_data
+    async with session.get(f"{api_endpoint}/users/@me", headers=headers) as response:
+        if not response.ok: return "Grabbing data failed."
+        user_data = await response.json()
+        if user_data.get("id") and int(user_data.get("id")) == user_id:
+            return {
+                "token": token_data,
+                "user": user_data,
+            }
