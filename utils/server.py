@@ -35,7 +35,8 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         data=data,
         auth=aiohttp.BasicAuth(client_id, client_secret),
     ) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         data_response = await response.json()
         access_token = data_response.get("access_token")
         token_type = data_response.get("token_type")
@@ -46,7 +47,8 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
     async with session.get(f"{api_endpoint}/users/@me", headers=headers) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         user_data = await response.json()
         user_data_id = int(user_data.get("id"))
 
@@ -58,7 +60,8 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
         # wouldn't code be weird though ?
 
     async with session.get(f"{api_endpoint}/oauth2/@me", headers=headers) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         app_data = await response.json()
 
     # https://discord.com/developers/docs/topics/oauth2#get-current-authorization-information
@@ -67,22 +70,19 @@ async def handle_basic_response(app: FastAPI, code: str, state: str, redirect_ur
     # maybe more data below:
 
     async with session.get(f"{api_endpoint}/users/@me/guilds?with_counts=True", headers=headers) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         guilds = await response.json()
 
     async with session.get(f"{api_endpoint}/users/@me/connections", headers=headers) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         connections = await response.json()
 
     # connections
     # are there more things for all the other data?
 
-    complete_data = {
-        "user": user_data,
-        "app": app_data,
-        "guilds": guilds,
-        "connections": connections
-    }
+    complete_data = {"user": user_data, "app": app_data, "guilds": guilds, "connections": connections}
 
     """
     complete_data = {}
@@ -114,27 +114,22 @@ async def handle_grab_token(app: FastAPI, code: str, state: str, redirect_uri: s
 
     # this is basically the same way as long
 
-    data = {
-        "grant_type": "authorization_code",
-        "code": code,
-        "redirect_uri": redirect_uri
-    }
+    data = {"grant_type": "authorization_code", "code": code, "redirect_uri": redirect_uri}
 
     async with session.post(
-        f"{api_endpoint}/oauth2/token",
-        data=data,
-        auth=aiohttp.BasicAuth(client_id, client_secret)
+        f"{api_endpoint}/oauth2/token", data=data, auth=aiohttp.BasicAuth(client_id, client_secret)
     ) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         token_data = await response.json()
         access_token = token_data.get("access_token")
         token_type = token_data.get("token_type")
 
-
     headers = {"authorization": f"{token_type} {access_token}"}
     # not sure if that's right but it seems to match.
     async with session.get(f"{api_endpoint}/users/@me", headers=headers) as response:
-        if not response.ok: return "Grabbing data failed."
+        if not response.ok:
+            return "Grabbing data failed."
         user_data = await response.json()
         if user_data.get("id") and int(user_data.get("id")) == user_id:
             return {
