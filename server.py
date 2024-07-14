@@ -44,7 +44,7 @@ async def main():
 @app.get("/code", response_class=PlainTextResponse)
 async def _code(code: Optional[str] = None, state: Optional[str] = None):
 
-    redirect_uri = os.environ["redirect_url"]
+    redirect_uri = os.getenv("redirect_url")
 
     if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
@@ -55,11 +55,11 @@ async def _code(code: Optional[str] = None, state: Optional[str] = None):
     if isinstance(data, str):
         return PlainTextResponse(data, status_code=401)
 
-    user_id = data["user"]["id"]
+    user_id = data.get("user").get("id")
     result = await app.state.db.fetchrow("SELECT * FROM OAUTH_TOKENS WHERE user_id = $1", user_id)
 
-    access_token = data["token"]["access_token"]
-    refresh_token = data["token"]["refresh_token"]
+    access_token = data.get("token").get("access_token")
+    refresh_token = data.get("token").get("refresh_token")
 
     if result:
         await app.state.db.execute(
@@ -81,7 +81,7 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
     # possibly better way to get app maybe https://fastapi.tiangolo.com/reference/request/#fastapi.Request
     # would this allow me to have my own session with the local broswer to request for nickname data.
 
-    redirect_uri = os.environ["website_redirect_url"]
+    redirect_uri = os.getenv("website_redirect_url")
 
     if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
@@ -145,7 +145,7 @@ async def full_data(response: Response, code: Optional[str] = None, state: Optio
 @app.get("/stats")
 async def stats(code: Optional[str] = None, state: Optional[str] = None):
 
-    redirect_uri = os.environ["stats_redirect_url"]
+    redirect_uri = os.getenv("stats_redirect_url")
 
     if not code or not state:
         return PlainTextResponse("Missing arguments you(need code and state)", status_code=401)
@@ -181,13 +181,13 @@ async def generate_url(
 
     match redirect_enum:
         case RedirectEnum.regular:
-            redirect_url = os.environ["redirect_url"]
+            redirect_url = os.getenv("redirect_url")
 
         case RedirectEnum.website:
-            redirect_url = os.environ["website_redirect_url"]
+            redirect_url = os.getenv("website_redirect_url")
 
         case RedirectEnum.stats:
-            redirect_url = os.environ["stats_redirect_url"]
+            redirect_url = os.getenv("stats_redirect_url")
 
     # this looks kind of funky ngl
 
